@@ -26,5 +26,5 @@ If `DIVA_API_TOKEN` is set, send `Authorization: Bearer <token>` on every `/api`
 ```bash
 curl -X POST localhost:8000/api/configs/bridal/reports \
   -H 'Content-Type: application/json' \
-  -d "{\"variables\": $(cat examples/bridal_vars.json), \"author\": \"priya\"}"
+  -d "{\"variables\": $(cat examples/bridal_vars.json), \"author\": \"payal\"}"
 ```
