@@ -1,0 +1,115 @@
+{
+  "id": "C-0034",
+  "name": "Everyday Dress Annual Review",
+  "version": 1,
+  "status": "Draft",
+  "type": "Everyday Dresses",
+  "client": "Resort & Occasion",
+  "country": "AU",
+  "output": "pdf",
+  "template": "TPL-EVD-v1",
+  "style": "Editorial — Polished",
+  "desc": "Annual review of everyday and resort dresses covering fabric, sizing, colour palette, and seasonal performance.",
+  "numApproversRequired": 2,
+  "globalApprovers": [
+    {
+      "role": "CreativeDirector",
+      "sla": 72,
+      "order": 1,
+      "required": true
+    }
+  ],
+  "lastUpdated": "2025-04-15",
+  "sections_count": 3,
+  "vars_count": 2,
+  "geography": {
+    "country": "AU",
+    "state": "Western Australia",
+    "city": "Perth",
+    "studioName": "Perth Design Studio",
+    "studioId": "STU-PER01",
+    "sizeSystem": "AU Women's Sizing",
+    "labellingAuthority": "ACCC",
+    "licenceNo": "ABN-PER001",
+    "labellingStandard": "AS/NZS 1957",
+    "cadence": "Annual",
+    "sizeStandards": [
+      "AS 1344",
+      "Extended Size Chart"
+    ]
+  },
+  "variables": [
+    {
+      "id": "v1",
+      "name": "reporting_year",
+      "label": "Reporting Year",
+      "type": "Number",
+      "sort": 1,
+      "required": true,
+      "help": ""
+    },
+    {
+      "id": "v2",
+      "name": "label_name",
+      "label": "Label Name",
+      "type": "FreeText",
+      "sort": 2,
+      "required": true,
+      "help": ""
+    }
+  ],
+  "sections": [
+    {
+      "id": "s1",
+      "num": "ES",
+      "title": "Executive Summary",
+      "type": "ExecutiveSummary",
+      "shape": "Text",
+      "seq": 0,
+      "parent": "",
+      "required": true,
+      "generatable": true,
+      "instructions": "Annual dress performance summary for {label_name} — {reporting_year}.",
+      "sources": [],
+      "approvers": [
+        {
+          "role": "CreativeDirector",
+          "sla": 72,
+          "order": 1,
+          "required": true
+        }
+      ],
+      "condition": null
+    },
+    {
+      "id": "s2",
+      "num": "1",
+      "title": "Introduction",
+      "type": "Content",
+      "shape": "Text",
+      "seq": 1,
+      "parent": "",
+      "required": true,
+      "generatable": true,
+      "instructions": "Purpose, scope, and seasonal calendar for annual dress reporting.",
+      "sources": [],
+      "approvers": [],
+      "condition": null
+    },
+    {
+      "id": "s3",
+      "num": "2",
+      "title": "Fabric & Colour Palette",
+      "type": "Content",
+      "shape": "Mixed",
+      "seq": 2,
+      "parent": "",
+      "required": true,
+      "generatable": true,
+      "instructions": "Present and assess fabric and colour palette performance for {reporting_year}.",
+      "sources": [],
+      "approvers": [],
+      "condition": null
+    }
+  ]
+}

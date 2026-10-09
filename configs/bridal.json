@@ -1,0 +1,204 @@
+{
+  "id": "C-0041",
+  "name": "Bridal Collection Report — Atelier Standard",
+  "version": 3,
+  "status": "Active",
+  "type": "Bridal Gowns",
+  "client": "Bridal Atelier",
+  "country": "US",
+  "output": "docx",
+  "template": "TPL-BRD-ATL-v2",
+  "style": "Technical — Spec Sheet",
+  "desc": "Standard collection report for bridal gowns. Supports quarterly and annual reporting cycles with dynamic section inclusion for made-to-measure orders.",
+  "numApproversRequired": 2,
+  "globalApprovers": [
+    {
+      "role": "HeadDesigner",
+      "sla": 48,
+      "order": 1,
+      "required": true
+    }
+  ],
+  "lastUpdated": "2025-06-01",
+  "sections_count": 6,
+  "vars_count": 4,
+  "geography": {
+    "country": "US",
+    "state": "New York",
+    "city": "New York",
+    "studioName": "Madison Avenue Salon",
+    "studioId": "STU-10022",
+    "sizeSystem": "US Women's Sizing",
+    "labellingAuthority": "FTC",
+    "licenceNo": "RN-44709",
+    "labellingStandard": "Textile Fiber Products Identification Act",
+    "cadence": "Quarterly",
+    "sizeStandards": [
+      "ASTM D5585",
+      "Bridal Size Chart"
+    ]
+  },
+  "variables": [
+    {
+      "id": "v1",
+      "name": "collection_season",
+      "label": "Collection Season / Dates",
+      "type": "DateRange",
+      "sort": 1,
+      "required": true,
+      "help": "Select the selling period",
+      "validation": {
+        "maxSpanDays": 92,
+        "maxDate": "today"
+      }
+    },
+    {
+      "id": "v2",
+      "name": "report_quarter",
+      "label": "Reporting Quarter",
+      "type": "Selection",
+      "sort": 2,
+      "required": true,
+      "help": "Quarter this report covers",
+      "options": [
+        "Q1",
+        "Q2",
+        "Q3",
+        "Q4"
+      ]
+    },
+    {
+      "id": "v3",
+      "name": "made_to_measure_offered",
+      "label": "Made-to-Measure Offered This Quarter?",
+      "type": "Boolean",
+      "sort": 3,
+      "required": true,
+      "help": "Controls made-to-measure section inclusion"
+    },
+    {
+      "id": "v4",
+      "name": "collection_name",
+      "label": "Collection Name",
+      "type": "FreeText",
+      "sort": 4,
+      "required": true,
+      "help": "Name of the bridal collection, e.g. Aurelia"
+    }
+  ],
+  "sections": [
+    {
+      "id": "s1",
+      "num": "ES",
+      "title": "Executive Summary",
+      "type": "ExecutiveSummary",
+      "shape": "Text",
+      "seq": 0,
+      "parent": "",
+      "required": true,
+      "generatable": true,
+      "instructions": "Write a concise executive summary covering key findings for {collection_season}.",
+      "sources": [],
+      "approvers": [
+        {
+          "role": "HeadDesigner",
+          "sla": 24,
+          "order": 1,
+          "required": true
+        }
+      ],
+      "condition": null
+    },
+    {
+      "id": "s2",
+      "num": "1",
+      "title": "Collection Overview",
+      "type": "Content",
+      "shape": "Text",
+      "seq": 1,
+      "parent": "",
+      "required": true,
+      "generatable": true,
+      "instructions": "Collection background and brand context for {collection_season}.",
+      "sources": [
+        {
+          "id": "src1",
+          "priority": 1,
+          "index": "prior-reports",
+          "query": "collection overview background {collection_name}",
+          "mode": "Semantic",
+          "topK": 3,
+          "minScore": 0.7,
+          "filter": "Narrative",
+          "fallback": "GenerateWithoutContext"
+        }
+      ],
+      "approvers": [],
+      "condition": null
+    },
+    {
+      "id": "s3",
+      "num": "2",
+      "title": "Design Story & Inspiration",
+      "type": "Content",
+      "shape": "Mixed",
+      "seq": 2,
+      "parent": "",
+      "required": true,
+      "generatable": true,
+      "instructions": "Describe the collection's inspiration, silhouettes, fabrics, and embellishment.",
+      "sources": [],
+      "approvers": [],
+      "condition": null
+    },
+    {
+      "id": "s4",
+      "num": "3",
+      "title": "Style Performance",
+      "type": "Content",
+      "shape": "Table",
+      "seq": 3,
+      "parent": "",
+      "required": true,
+      "generatable": true,
+      "instructions": "Present tabular sales and sell-through results for all styles.",
+      "sources": [],
+      "approvers": [],
+      "condition": null
+    },
+    {
+      "id": "s5",
+      "num": "3.1",
+      "title": "Silhouette & Neckline Breakdown",
+      "type": "Content",
+      "shape": "Table",
+      "seq": 1,
+      "parent": "s4",
+      "required": true,
+      "generatable": true,
+      "instructions": "Present sales by silhouette and neckline in tabular format.",
+      "sources": [],
+      "approvers": [],
+      "condition": null
+    },
+    {
+      "id": "s6",
+      "num": "3.2",
+      "title": "Made-to-Measure Orders",
+      "type": "Content",
+      "shape": "Table",
+      "seq": 2,
+      "parent": "s4",
+      "required": false,
+      "generatable": true,
+      "instructions": "Present made-to-measure order volumes and lead times.",
+      "sources": [],
+      "approvers": [],
+      "condition": {
+        "variable": "made_to_measure_offered",
+        "operator": "equals",
+        "value": "Yes"
+      }
+    }
+  ]
+}

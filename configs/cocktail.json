@@ -1,0 +1,119 @@
+{
+  "id": "C-0023",
+  "name": "Cocktail Dress Quarterly Trends",
+  "version": 1,
+  "status": "Draft",
+  "type": "Cocktail Dresses",
+  "client": "Ready-to-Wear",
+  "country": "US",
+  "output": "docx",
+  "template": "TPL-CKT-v1",
+  "style": "Standard — Professional",
+  "desc": "Quarterly trend and sell-through report for cocktail dresses across ready-to-wear lines. Includes statistical trend analysis.",
+  "numApproversRequired": 1,
+  "globalApprovers": [],
+  "lastUpdated": "2025-05-10",
+  "sections_count": 3,
+  "vars_count": 2,
+  "geography": {
+    "country": "US",
+    "state": "California",
+    "city": "Los Angeles",
+    "studioName": "Downtown LA Showroom",
+    "studioId": "STU-LA405",
+    "sizeSystem": "US Women's Sizing",
+    "labellingAuthority": "FTC",
+    "licenceNo": "RN-LA405",
+    "labellingStandard": "Care Labeling Rule",
+    "cadence": "Quarterly",
+    "sizeStandards": [
+      "ASTM D5585",
+      "Misses Size Chart"
+    ]
+  },
+  "variables": [
+    {
+      "id": "v1",
+      "name": "trend_quarter",
+      "label": "Trend Quarter",
+      "type": "Selection",
+      "sort": 1,
+      "required": true,
+      "help": "",
+      "options": [
+        "Q1 (Jan-Mar)",
+        "Q2 (Apr-Jun)",
+        "Q3 (Jul-Sep)",
+        "Q4 (Oct-Dec)"
+      ]
+    },
+    {
+      "id": "v2",
+      "name": "line_number",
+      "label": "Line Number",
+      "type": "FreeText",
+      "sort": 2,
+      "required": true,
+      "help": "8-digit line number"
+    }
+  ],
+  "sections": [
+    {
+      "id": "s1",
+      "num": "ES",
+      "title": "Executive Summary",
+      "type": "ExecutiveSummary",
+      "shape": "Text",
+      "seq": 0,
+      "parent": "",
+      "required": true,
+      "generatable": true,
+      "instructions": "Summarise quarterly cocktail dress trends and sell-through.",
+      "sources": [],
+      "approvers": [],
+      "condition": null
+    },
+    {
+      "id": "s2",
+      "num": "1",
+      "title": "Introduction",
+      "type": "Content",
+      "shape": "Text",
+      "seq": 1,
+      "parent": "",
+      "required": true,
+      "generatable": true,
+      "instructions": "Overview of the cocktail dress trend programme.",
+      "sources": [],
+      "approvers": [],
+      "condition": null
+    },
+    {
+      "id": "s3",
+      "num": "2",
+      "title": "Sell-Through Results",
+      "type": "Content",
+      "shape": "Table",
+      "seq": 2,
+      "parent": "",
+      "required": true,
+      "generatable": true,
+      "instructions": "Present sell-through results for all styles and colourways.",
+      "sources": [
+        {
+          "id": "src1",
+          "priority": 1,
+          "index": "sales-data",
+          "query": "cocktail dress sell-through {line_number} {trend_quarter}",
+          "mode": "Hybrid",
+          "topK": 5,
+          "minScore": 0.7,
+          "filter": "Table",
+          "fallback": "GenerateWithoutContext"
+        }
+      ],
+      "approvers": [],
+      "condition": null
+    }
+  ]
+}

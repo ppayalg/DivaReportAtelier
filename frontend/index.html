@@ -1,0 +1,2612 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Diva Atelier AI — Reports & Templates</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --navy:#0b1e3d;--brand:#1a56db;--brand-lt:#eef3ff;--brand2:#0e3fa3;
+  --green:#16a34a;--green-lt:#f0fdf4;--red:#dc2626;--amber:#d97706;--amber-lt:#fffbeb;
+  --purple:#7c3aed;--purple-lt:#f3e8ff;--teal:#0891b2;--teal-lt:#e0f2fe;
+  --bg:#f1f4f9;--card:#fff;--border:#e2e8f0;--border2:#cbd5e1;
+  --text:#0f172a;--muted:#64748b;--light:#f8fafc;
+  --mono:'JetBrains Mono',monospace;--sans:'Inter',sans-serif;
+  --sh:0 1px 3px rgba(0,0,0,.06),0 4px 12px rgba(0,0,0,.04);
+  --sh2:0 8px 32px rgba(0,0,0,.12);
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{font-size:14px;}
+body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:100vh;}
+
+/* ── PAGES ── */
+.page{display:none;}
+.page.active{display:flex;flex-direction:column;min-height:100vh;}
+
+/* ── SHARED TOPBAR ── */
+.topbar{
+  background:var(--navy);height:56px;display:flex;align-items:center;
+  padding:0 24px;gap:16px;position:sticky;top:0;z-index:200;flex-shrink:0;
+}
+.topbar-logo{
+  font-size:1rem;font-weight:800;color:#fff;letter-spacing:-.02em;
+  display:flex;align-items:center;gap:8px;cursor:pointer;
+}
+.topbar-logo .dot{color:#fbbf24;}
+.topbar-logo .badge{background:var(--brand);padding:3px 8px;border-radius:6px;font-size:.72rem;}
+.topbar-search{
+  flex:1;max-width:380px;position:relative;
+}
+.topbar-search input{
+  width:100%;padding:7px 12px 7px 34px;border:1px solid rgba(255,255,255,.15);
+  border-radius:8px;background:rgba(255,255,255,.08);color:#fff;font-size:.82rem;
+  font-family:var(--sans);outline:none;transition:all .2s;
+}
+.topbar-search input::placeholder{color:rgba(255,255,255,.4);}
+.topbar-search input:focus{background:rgba(255,255,255,.14);border-color:rgba(255,255,255,.3);}
+.topbar-search .si{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:rgba(255,255,255,.4);font-size:.85rem;}
+.topbar-right{margin-left:auto;display:flex;align-items:center;gap:8px;}
+.topbar-avatar{
+  width:32px;height:32px;border-radius:50%;background:var(--brand);
+  display:flex;align-items:center;justify-content:center;color:#fff;
+  font-size:.78rem;font-weight:700;cursor:pointer;
+}
+.topbar-back{
+  display:flex;align-items:center;gap:5px;color:rgba(255,255,255,.7);
+  font-size:.8rem;cursor:pointer;padding:5px 10px;border-radius:6px;
+  transition:all .15s;border:none;background:none;font-family:var(--sans);
+}
+.topbar-back:hover{color:#fff;background:rgba(255,255,255,.1);}
+
+/* ── DASHBOARD LAYOUT ── */
+.dash-body{display:flex;flex:1;}
+.dash-sidebar{
+  width:220px;background:#fff;border-right:1px solid var(--border);
+  padding:16px 0;flex-shrink:0;
+}
+.ds-section{padding:0 12px;margin-bottom:20px;}
+.ds-label{font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);padding:0 8px;margin-bottom:6px;}
+.ds-item{
+  display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:7px;
+  cursor:pointer;font-size:.82rem;color:var(--text);transition:all .12s;margin-bottom:1px;
+}
+.ds-item:hover{background:#f1f5f9;color:var(--brand);}
+.ds-item.active{background:var(--brand-lt);color:var(--brand);font-weight:600;}
+.ds-item .dsi{width:18px;text-align:center;font-size:.85rem;opacity:.6;}
+.ds-item.active .dsi{opacity:1;}
+.ds-count{margin-left:auto;background:#e2e8f0;color:var(--muted);border-radius:20px;font-size:.65rem;font-weight:700;padding:1px 6px;}
+.ds-item.active .ds-count{background:var(--brand);color:#fff;}
+
+/* ── MAIN CONTENT ── */
+.dash-main{flex:1;padding:24px 28px;overflow-y:auto;}
+
+/* ── STATS ROW ── */
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:24px;}
+.stat-card{
+  background:#fff;border:1px solid var(--border);border-radius:12px;
+  padding:16px 18px;box-shadow:var(--sh);
+  display:flex;align-items:center;gap:14px;
+}
+.stat-icon{
+  width:44px;height:44px;border-radius:10px;display:flex;align-items:center;
+  justify-content:center;font-size:1.2rem;flex-shrink:0;
+}
+.stat-body .sv{font-size:1.6rem;font-weight:700;color:var(--text);line-height:1;}
+.stat-body .sl{font-size:.75rem;color:var(--muted);margin-top:3px;}
+
+/* ── SECTION HEADER ── */
+.sec-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+.sec-hdr h2{font-size:1rem;font-weight:700;color:var(--text);}
+.sec-hdr p{font-size:.78rem;color:var(--muted);margin-top:1px;}
+.sec-hdr-actions{display:flex;gap:8px;align-items:center;}
+
+/* ── FILTER BAR ── */
+.filter-bar{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;align-items:center;}
+.filter-btn{
+  padding:5px 12px;border-radius:20px;border:1.5px solid var(--border2);
+  background:#fff;color:var(--muted);font-size:.78rem;font-weight:500;
+  cursor:pointer;transition:all .12s;font-family:var(--sans);
+}
+.filter-btn:hover{border-color:var(--brand);color:var(--brand);}
+.filter-btn.active{background:var(--brand);color:#fff;border-color:var(--brand);}
+.filter-select{
+  padding:5px 10px;border:1.5px solid var(--border2);border-radius:8px;
+  font-size:.78rem;font-family:var(--sans);color:var(--text);background:#fff;outline:none;
+}
+.filter-select:focus{border-color:var(--brand);}
+.filter-search{
+  padding:6px 10px 6px 28px;border:1.5px solid var(--border2);border-radius:8px;
+  font-size:.78rem;font-family:var(--sans);color:var(--text);background:#fff;
+  outline:none;min-width:200px;position:relative;
+}
+
+/* ── REPORT CARDS GRID ── */
+.cards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;margin-bottom:28px;}
+
+/* ── REPORT CARD ── */
+.rcard{
+  background:#fff;border:1px solid var(--border);border-radius:12px;
+  box-shadow:var(--sh);overflow:hidden;cursor:pointer;
+  transition:box-shadow .15s,transform .15s,border-color .15s;
+}
+.rcard:hover{box-shadow:var(--sh2);transform:translateY(-2px);border-color:#bfdbfe;}
+.rcard-top{padding:16px 16px 12px;}
+.rcard-header{display:flex;align-items:flex-start;gap:10px;margin-bottom:10px;}
+.rcard-icon{
+  width:40px;height:40px;border-radius:10px;display:flex;align-items:center;
+  justify-content:center;font-size:1.1rem;flex-shrink:0;
+}
+.rcard-title-block{flex:1;}
+.rcard-title{font-size:.9rem;font-weight:700;color:var(--text);line-height:1.3;}
+.rcard-id{font-family:var(--mono);font-size:.68rem;color:var(--muted);margin-top:2px;}
+.rcard-desc{font-size:.78rem;color:var(--muted);line-height:1.5;margin-bottom:10px;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.rcard-tags{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px;}
+.rtag{padding:2px 8px;border-radius:20px;font-size:.67rem;font-weight:600;text-transform:uppercase;letter-spacing:.03em;}
+.rtag-gw{background:#dbeafe;color:#1e40af;}
+.rtag-env{background:#dcfce7;color:#166534;}
+.rtag-sw{background:#e0f2fe;color:#0369a1;}
+.rtag-air{background:#fce7f3;color:#9d174d;}
+.rtag-const{background:#fef3c7;color:#92400e;}
+.rtag-client{background:#f3e8ff;color:#6d28d9;}
+.rtag-geo{background:#fff7ed;color:#c2410c;}
+.rcard-geo{
+  display:flex;align-items:center;gap:5px;font-size:.75rem;color:var(--muted);
+  padding:7px 0;border-top:1px solid var(--border);margin-top:4px;
+}
+.rcard-geo .flag{font-size:.9rem;}
+.rcard-footer{
+  background:#fafbfd;border-top:1px solid var(--border);
+  padding:10px 16px;display:flex;align-items:center;justify-content:space-between;
+}
+.rcard-meta{display:flex;gap:12px;}
+.rcard-meta-item{display:flex;align-items:center;gap:4px;font-size:.73rem;color:var(--muted);}
+.rcard-status{padding:2px 8px;border-radius:20px;font-size:.68rem;font-weight:700;}
+.st-active{background:#dcfce7;color:#166534;}
+.st-draft{background:#fef3c7;color:#92400e;}
+.st-review{background:#dbeafe;color:#1e40af;}
+.st-archived{background:#f1f5f9;color:#64748b;}
+.rcard-action{
+  display:flex;align-items:center;gap:5px;font-size:.75rem;font-weight:600;
+  color:var(--brand);padding:4px 10px;border-radius:6px;
+  transition:background .12s;
+}
+.rcard:hover .rcard-action{background:var(--brand-lt);}
+
+/* ── TABLE VIEW ── */
+.report-table{width:100%;border-collapse:collapse;background:#fff;border-radius:12px;overflow:hidden;box-shadow:var(--sh);}
+.report-table th{
+  padding:10px 14px;text-align:left;font-size:.72rem;font-weight:700;
+  text-transform:uppercase;letter-spacing:.05em;color:var(--muted);
+  background:#f8fafc;border-bottom:1px solid var(--border);
+}
+.report-table td{padding:10px 14px;font-size:.82rem;border-bottom:1px solid var(--border);vertical-align:middle;}
+.report-table tr:last-child td{border-bottom:none;}
+.report-table tr:hover td{background:#f8fafc;cursor:pointer;}
+.report-table tr:hover .rt-title{color:var(--brand);}
+.rt-title{font-weight:600;color:var(--text);}
+.rt-id{font-family:var(--mono);font-size:.72rem;color:var(--muted);}
+.rt-geo{font-size:.75rem;color:var(--muted);display:flex;align-items:center;gap:4px;}
+.sort-btn{background:none;border:none;cursor:pointer;color:var(--muted);font-size:.75rem;padding:0 2px;}
+.sort-btn:hover{color:var(--brand);}
+
+/* ── SECTION DIVIDER ── */
+.section-divider{
+  display:flex;align-items:center;gap:12px;margin:24px 0 16px;
+}
+.section-divider h3{font-size:.9rem;font-weight:700;color:var(--text);white-space:nowrap;}
+.section-divider .sd-line{flex:1;height:1px;background:var(--border);}
+.section-divider .sd-badge{
+  background:var(--navy);color:#fff;border-radius:6px;padding:2px 8px;
+  font-size:.7rem;font-weight:700;white-space:nowrap;
+}
+
+/* ── TEMPLATE CARD (smaller) ── */
+.tmpl-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;margin-bottom:28px;}
+.tmpl-card{
+  background:#fff;border:1px solid var(--border);border-radius:10px;
+  padding:14px;box-shadow:var(--sh);cursor:pointer;
+  transition:box-shadow .15s,border-color .15s,transform .15s;
+  display:flex;flex-direction:column;gap:8px;
+}
+.tmpl-card:hover{box-shadow:var(--sh2);border-color:#bfdbfe;transform:translateY(-1px);}
+.tmpl-card-header{display:flex;align-items:center;gap:9px;}
+.tmpl-icon{width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.95rem;flex-shrink:0;}
+.tmpl-title{font-size:.85rem;font-weight:600;color:var(--text);line-height:1.3;}
+.tmpl-client{font-size:.72rem;color:var(--muted);}
+.tmpl-meta{display:flex;gap:6px;flex-wrap:wrap;}
+.tmpl-footer{display:flex;align-items:center;justify-content:space-between;margin-top:2px;}
+.tmpl-geo-row{display:flex;align-items:center;gap:4px;font-size:.72rem;color:var(--muted);}
+
+/* ── VIEW TOGGLE ── */
+.view-toggle{display:flex;border:1px solid var(--border2);border-radius:7px;overflow:hidden;}
+.vt-btn{
+  padding:5px 9px;border:none;background:#fff;cursor:pointer;
+  font-size:.85rem;color:var(--muted);transition:all .12s;
+}
+.vt-btn.active{background:var(--brand);color:#fff;}
+
+/* ── EMPTY STATE ── */
+.empty-state{
+  text-align:center;padding:48px 20px;background:#fff;border-radius:12px;
+  border:1px solid var(--border);
+}
+.empty-state .ei{font-size:2.5rem;margin-bottom:8px;}
+.empty-state h3{font-size:.95rem;font-weight:600;margin-bottom:4px;}
+.empty-state p{font-size:.82rem;color:var(--muted);}
+
+/* ── BTN ── */
+.btn{
+  display:inline-flex;align-items:center;gap:5px;padding:7px 14px;
+  border-radius:7px;border:none;cursor:pointer;font-size:.8rem;font-weight:600;
+  font-family:var(--sans);transition:all .13s;
+}
+.btn-primary{background:var(--brand);color:#fff;}
+.btn-primary:hover{background:var(--brand2);}
+.btn-outline{background:#fff;color:var(--brand);border:1.5px solid var(--brand);}
+.btn-outline:hover{background:var(--brand-lt);}
+.btn-ghost{background:transparent;color:var(--muted);border:1.5px solid var(--border2);}
+.btn-ghost:hover{background:#f1f5f9;color:var(--text);}
+.btn-sm{padding:4px 9px;font-size:.75rem;}
+.btn-green{background:var(--green);color:#fff;}
+.btn-green:hover{background:#15803d;}
+
+/* ── TOAST ── */
+#toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--navy);color:#fff;padding:9px 20px;border-radius:8px;font-size:.82rem;font-weight:500;z-index:9999;transition:transform .3s;box-shadow:var(--sh2);pointer-events:none;white-space:nowrap;}
+
+/* ══════════════════════════════════
+   CONFIGURATION PAGE (page 2) styles
+   ══════════════════════════════════ */
+.cfg-shell{display:grid;grid-template-columns:72px 248px 1fr;flex:1;}
+
+/* rail */
+.rail{background:var(--navy);display:flex;flex-direction:column;align-items:center;padding:12px 0;gap:4px;}
+.rail-btn{width:44px;height:44px;border-radius:10px;border:none;background:none;cursor:pointer;color:#94a3b8;font-size:1.1rem;display:flex;align-items:center;justify-content:center;transition:all .15s;position:relative;}
+.rail-btn:hover,.rail-btn.active{background:rgba(255,255,255,.1);color:#fff;}
+.rail-btn.active::before{content:'';position:absolute;left:0;top:50%;transform:translateY(-50%);width:3px;height:24px;background:var(--green);border-radius:0 3px 3px 0;}
+.rail-sep{width:32px;height:1px;background:rgba(255,255,255,.1);margin:8px 0;}
+
+/* sidebar */
+.cfg-sidebar{background:#fff;border-right:1px solid var(--border);display:flex;flex-direction:column;overflow-y:auto;}
+.sb-switcher{padding:14px;border-bottom:1px solid var(--border);}
+.sb-label{font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:5px;}
+.rsw{position:relative;}
+.rsw select{width:100%;padding:7px 28px 7px 9px;border:1px solid var(--border2);border-radius:7px;font-size:.8rem;color:var(--text);background:#fff;cursor:pointer;appearance:none;font-family:var(--sans);outline:none;}
+.rsw select:focus{border-color:var(--brand);box-shadow:0 0 0 3px rgba(26,86,219,.08);}
+.rsw::after{content:'▾';position:absolute;right:9px;top:50%;transform:translateY(-50%);color:var(--muted);pointer-events:none;font-size:.75rem;}
+.sb-meta{padding:12px 14px;border-bottom:1px solid var(--border);}
+.sm-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;}
+.sm-key{font-size:.7rem;color:var(--muted);font-weight:500;}
+.sm-val{font-size:.76rem;font-weight:600;color:var(--text);}
+.sm-val.mono{font-family:var(--mono);font-size:.7rem;}
+.bv{background:var(--brand-lt);color:var(--brand);padding:1px 7px;border-radius:10px;font-size:.68rem;font-weight:700;}
+.bd{background:#fef3c7;color:#92400e;padding:2px 8px;border-radius:10px;font-size:.68rem;font-weight:700;}
+.ba{background:#dcfce7;color:#166534;padding:2px 8px;border-radius:10px;font-size:.68rem;font-weight:700;}
+.sb-nav{padding:10px 8px;flex:1;}
+.sn-label{font-size:.63rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);padding:0 8px;margin-bottom:4px;margin-top:8px;}
+.sn-item{display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:7px;cursor:pointer;font-size:.81rem;color:var(--text);transition:all .12s;margin-bottom:1px;}
+.sn-item:hover{background:#f1f5f9;color:var(--brand);}
+.sn-item.active{background:var(--brand-lt);color:var(--brand);font-weight:600;}
+.sn-icon{font-size:.85rem;width:18px;text-align:center;opacity:.6;}
+.sn-item.active .sn-icon{opacity:1;}
+.sn-badge{margin-left:auto;background:var(--brand);color:#fff;border-radius:20px;font-size:.63rem;font-weight:700;padding:1px 6px;}
+.sb-footer{padding:10px 14px;border-top:1px solid var(--border);}
+.sb-footer .btn-new{width:100%;padding:7px;border:1.5px dashed var(--border2);border-radius:7px;background:transparent;color:var(--brand);font-size:.78rem;font-weight:600;cursor:pointer;transition:all .15s;font-family:var(--sans);}
+.sb-footer .btn-new:hover{background:var(--brand-lt);border-color:var(--brand);}
+
+/* cfg main */
+.cfg-main{padding:24px 28px;overflow-y:auto;background:var(--bg);}
+.main-panel{display:none;}
+.main-panel.active{display:block;}
+.panel-hdr{margin-bottom:18px;}
+.panel-hdr h1{font-size:1.25rem;font-weight:700;color:var(--navy);}
+.panel-hdr p{font-size:.78rem;color:var(--muted);margin-top:3px;}
+.panel-strip{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+.panel-strip h2{font-size:.95rem;font-weight:700;}
+.panel-strip p{font-size:.75rem;color:var(--muted);margin-top:1px;}
+
+/* cfg cards */
+.ccard{background:#fff;border:1px solid var(--border);border-radius:12px;padding:18px;margin-bottom:14px;box-shadow:var(--sh);}
+.ccard-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--border);}
+.ccard-hdr h3{font-size:.88rem;font-weight:700;color:var(--navy);display:flex;align-items:center;gap:6px;}
+.ccard-hdr p{font-size:.72rem;color:var(--muted);margin-top:2px;}
+
+/* form */
+.fg{display:grid;gap:11px;}
+.fg-2{grid-template-columns:1fr 1fr;}
+.fg-3{grid-template-columns:1fr 1fr 1fr;}
+.fg-4{grid-template-columns:1fr 1fr 1fr 1fr;}
+.full{grid-column:1/-1;}
+.field{display:flex;flex-direction:column;gap:3px;}
+.field label{font-size:.7rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;}
+.field input,.field select,.field textarea{border:1px solid var(--border2);border-radius:7px;padding:7px 10px;font-size:.84rem;color:var(--text);font-family:var(--sans);background:#fff;transition:border-color .15s;outline:none;width:100%;}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--brand);box-shadow:0 0 0 3px rgba(26,86,219,.08);}
+.field textarea{resize:vertical;line-height:1.5;}
+.field .hint{font-size:.68rem;color:var(--muted);}
+.field .mono{font-family:var(--mono);font-size:.78rem;}
+
+/* toggle */
+.toggle-row{display:flex;align-items:center;justify-content:space-between;padding:6px 0;}
+.toggle-info .tl{font-size:.83rem;font-weight:500;color:var(--text);}
+.toggle-info .ts{font-size:.7rem;color:var(--muted);}
+.tog{position:relative;width:38px;height:21px;flex-shrink:0;}
+.tog input{opacity:0;width:0;height:0;}
+.tog .sl{position:absolute;inset:0;background:#cbd5e1;border-radius:21px;cursor:pointer;transition:background .2s;}
+.tog .sl::before{content:'';position:absolute;left:3px;top:2.5px;width:16px;height:16px;background:#fff;border-radius:50%;transition:transform .2s;box-shadow:0 1px 3px rgba(0,0,0,.2);}
+.tog input:checked+.sl{background:var(--brand);}
+.tog input:checked+.sl::before{transform:translateX(17px);}
+
+/* section cards */
+.sec-card{background:#fff;border:1px solid var(--border);border-radius:11px;margin-bottom:10px;box-shadow:var(--sh);overflow:hidden;transition:box-shadow .15s;}
+.sec-card:hover{box-shadow:0 4px 18px rgba(0,0,0,.08);}
+.sec-card.child{margin-left:28px;border-left:3px solid var(--brand);}
+.sec-card-head{display:flex;align-items:center;gap:10px;padding:12px 16px;cursor:pointer;user-select:none;}
+.drag-handle{color:#cbd5e1;cursor:grab;font-size:.95rem;flex-shrink:0;}
+.sec-num-badge{background:var(--navy);color:#fff;border-radius:5px;padding:2px 8px;font-size:.7rem;font-weight:700;font-family:var(--mono);min-width:34px;text-align:center;flex-shrink:0;}
+.sec-num-badge.es{background:var(--green);}
+.sec-num-badge.ref{background:var(--purple);}
+.sec-num-badge.app{background:var(--teal);}
+.sec-title-block{flex:1;}
+.sec-title{font-size:.88rem;font-weight:600;color:var(--text);}
+.sec-subtitle{font-size:.7rem;color:var(--muted);margin-top:1px;}
+.sec-chips{display:flex;gap:4px;flex-wrap:wrap;}
+.chip{padding:2px 7px;border-radius:20px;font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.03em;}
+.chip-content{background:#e0e7ff;color:#3730a3;}
+.chip-exec{background:#fef3c7;color:#92400e;}
+.chip-ref{background:#ede9fe;color:#6d28d9;}
+.chip-app{background:#e0f2fe;color:#0369a1;}
+.chip-text{background:#dcfce7;color:#166534;}
+.chip-table{background:#e0e7ff;color:#1e40af;}
+.chip-mixed{background:#fff7ed;color:#9a3412;}
+.chip-image{background:#fce7f3;color:#9d174d;}
+.chip-gen{background:#dcfce7;color:#166534;}
+.chip-static{background:#f1f5f9;color:#475569;}
+.chip-cond{background:#fef3c7;color:#92400e;}
+.chip-req{background:#fee2e2;color:#991b1b;}
+.sec-actions{display:flex;gap:5px;align-items:center;margin-left:6px;}
+.sec-expand-btn{background:none;border:none;cursor:pointer;color:var(--muted);font-size:.82rem;padding:3px 5px;border-radius:5px;transition:transform .2s;}
+.sec-card.open .sec-expand-btn{transform:rotate(180deg);}
+.sec-body{display:none;border-top:1px solid var(--border);background:#fafbfd;}
+.sec-card.open .sec-body{display:block;}
+
+/* inner tabs */
+.inner-tabs{display:flex;gap:0;border-bottom:1px solid var(--border);background:#fff;padding:0 16px;overflow-x:auto;}
+.inner-tab{padding:8px 13px;border:none;background:none;cursor:pointer;font-size:.76rem;font-weight:500;color:var(--muted);border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .12s;font-family:var(--sans);white-space:nowrap;}
+.inner-tab:hover{color:var(--brand);}
+.inner-tab.active{color:var(--brand);border-bottom-color:var(--brand);font-weight:600;}
+.inner-panel{display:none;padding:16px;}
+.inner-panel.active{display:block;}
+
+/* var & source items */
+.var-item,.source-item{border:1px solid var(--border);border-radius:8px;background:#fff;margin-bottom:7px;overflow:hidden;}
+.var-head,.source-head{display:flex;align-items:center;gap:9px;padding:9px 13px;cursor:pointer;}
+.var-token{font-family:var(--mono);font-size:.76rem;font-weight:600;color:var(--brand);background:var(--brand-lt);padding:2px 7px;border-radius:4px;flex-shrink:0;}
+.var-lbl{font-size:.83rem;font-weight:500;flex:1;}
+.type-chip{padding:2px 7px;border-radius:20px;font-size:.66rem;font-weight:700;text-transform:uppercase;letter-spacing:.03em;flex-shrink:0;}
+.var-body,.source-body{display:none;border-top:1px solid var(--border);padding:13px;background:var(--light);}
+.var-item.open .var-body,.source-item.open .source-body{display:block;}
+.source-num{width:24px;height:24px;background:var(--navy);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:700;font-family:var(--mono);flex-shrink:0;}
+.source-index{font-size:.83rem;font-weight:600;flex:1;}
+.source-query{font-size:.73rem;color:var(--muted);flex:2;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+
+/* approver */
+.approver-item{display:grid;grid-template-columns:1fr 1fr 90px 70px auto;gap:8px;align-items:end;padding:9px 13px;border:1px solid var(--border);border-radius:8px;background:#fff;margin-bottom:6px;}
+.approval-summary{background:var(--brand-lt);border:1px solid #bfdbfe;border-radius:7px;padding:8px 12px;margin-bottom:10px;display:flex;align-items:center;gap:8px;font-size:.78rem;}
+
+/* tags */
+.tag-box{border:1px solid var(--border2);border-radius:7px;padding:5px 7px;display:flex;flex-wrap:wrap;gap:4px;background:#fff;min-height:36px;cursor:text;}
+.tag-box input{border:none;outline:none;flex:1;min-width:70px;font-size:.8rem;font-family:var(--sans);color:var(--text);padding:0;background:transparent;}
+.tag{background:var(--brand-lt);color:var(--brand);border-radius:4px;padding:2px 6px;font-size:.73rem;display:flex;align-items:center;gap:3px;}
+.tag .tx{background:none;border:none;cursor:pointer;color:var(--brand);font-size:.78rem;padding:0;}
+.opts-wrap{display:flex;flex-wrap:wrap;gap:5px;}
+.opt-tag{display:flex;align-items:center;gap:3px;background:var(--brand-lt);color:var(--brand);padding:3px 9px;border-radius:5px;font-size:.78rem;}
+.opt-tag .otx{background:none;border:none;cursor:pointer;color:var(--brand);}
+
+/* term table */
+.term-table{width:100%;border-collapse:collapse;margin-bottom:7px;}
+.term-table th,.term-table td{padding:5px 8px;text-align:left;font-size:.76rem;border:1px solid var(--border);}
+.term-table th{background:var(--brand-lt);font-weight:600;color:var(--navy);}
+.term-table td input{border:none;outline:none;width:100%;font-size:.76rem;font-family:var(--sans);background:transparent;}
+
+/* cond badge */
+.cond-badge{background:var(--amber-lt);border:1px solid #fde68a;border-radius:7px;padding:7px 11px;margin-bottom:10px;font-size:.78rem;display:flex;align-items:center;gap:7px;}
+
+/* add row */
+.add-row{width:100%;padding:8px;border:2px dashed var(--border2);border-radius:7px;background:transparent;color:var(--muted);font-size:.78rem;font-weight:500;cursor:pointer;font-family:var(--sans);transition:all .13s;display:flex;align-items:center;justify-content:center;gap:5px;}
+.add-row:hover{border-color:var(--brand);color:var(--brand);background:var(--brand-lt);}
+.add-row.green{border-color:#bbf7d0;color:var(--green);}
+.add-row.green:hover{border-color:var(--green);background:var(--green-lt);}
+
+/* callout */
+.callout{border-radius:7px;padding:8px 12px;margin-bottom:10px;font-size:.78rem;display:flex;gap:8px;align-items:flex-start;}
+.c-info{background:#eff6ff;border:1px solid #bfdbfe;}
+.c-warn{background:var(--amber-lt);border:1px solid #fde68a;}
+.c-success{background:var(--green-lt);border:1px solid #bbf7d0;}
+
+/* divider */
+hr.dv{border:none;border-top:1px solid var(--border);margin:10px 0;}
+
+/* json */
+.json-wrap{background:#0f172a;border-radius:10px;padding:14px;font-family:var(--mono);font-size:.76rem;line-height:1.65;overflow:auto;max-height:480px;white-space:pre;color:#e2e8f0;}
+.jk{color:#93c5fd;}.js{color:#a5f3fc;}.jn{color:#fcd34d;}.jb{color:#f9a8d4;}.jnl{color:#94a3b8;}
+.json-scope{display:flex;align-items:center;gap:8px;margin-bottom:12px;flex-wrap:wrap;}
+.json-scope label{font-size:.78rem;font-weight:600;color:var(--muted);}
+.json-scope select{padding:5px 9px;border:1px solid var(--border2);border-radius:6px;font-size:.8rem;font-family:var(--sans);outline:none;background:#fff;}
+
+/* modal */
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.38);z-index:500;align-items:center;justify-content:center;}
+.overlay.open{display:flex;}
+.modal{background:#fff;border-radius:13px;width:520px;max-width:94vw;max-height:86vh;overflow-y:auto;box-shadow:var(--sh2);}
+.modal-hd{display:flex;align-items:center;justify-content:space-between;padding:15px 18px;border-bottom:1px solid var(--border);position:sticky;top:0;background:#fff;z-index:1;}
+.modal-hd h3{font-size:.92rem;font-weight:700;}
+.modal-cl{background:none;border:none;cursor:pointer;color:var(--muted);font-size:1.1rem;padding:3px 6px;border-radius:5px;}
+.modal-cl:hover{background:#f1f5f9;}
+.modal-bd{padding:16px 18px;}
+.modal-ft{padding:11px 18px;border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:7px;}
+
+/* empty */
+.empty-st{text-align:center;padding:28px;color:var(--muted);}
+.empty-st .ei{font-size:1.8rem;margin-bottom:6px;}
+
+/* ══ CONFIGURATION INSIGHTS ══════════════════════════════ */
+.intel-card{
+  background:#fff;border:1px solid var(--border);border-radius:11px;
+  margin-bottom:12px;overflow:hidden;box-shadow:var(--sh);
+  transition:box-shadow .15s;
+}
+.intel-card:hover{box-shadow:0 4px 18px rgba(0,0,0,.09);}
+
+/* source type stripe on left */
+.intel-card.ic-recommendation{border-left:4px solid #7c3aed;}
+.intel-card.ic-comment{border-left:4px solid #1a56db;}
+.intel-card.ic-edit{border-left:4px solid #16a34a;}
+
+.intel-card-head{
+  display:flex;align-items:flex-start;gap:12px;padding:14px 16px;cursor:pointer;
+}
+.ic-type-badge{
+  display:flex;align-items:center;gap:5px;padding:3px 10px;border-radius:20px;
+  font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;
+  flex-shrink:0;white-space:nowrap;margin-top:1px;
+}
+.ic-type-badge.recommendation{background:#ede9fe;color:#6d28d9;}
+.ic-type-badge.comment{background:#dbeafe;color:#1e40af;}
+.ic-type-badge.edit{background:#dcfce7;color:#166534;}
+.ic-priority-badge{
+  padding:2px 8px;border-radius:20px;font-size:.67rem;font-weight:700;
+  text-transform:uppercase;flex-shrink:0;
+}
+.ip-critical{background:#fee2e2;color:#991b1b;}
+.ip-high{background:#fff7ed;color:#c2410c;}
+.ip-medium{background:#fffbeb;color:#92400e;}
+.ip-low{background:#f1f5f9;color:#64748b;}
+.ic-status-badge{
+  padding:2px 9px;border-radius:20px;font-size:.67rem;font-weight:700;
+  flex-shrink:0;margin-left:auto;
+}
+.is-open{background:#fffbeb;color:#92400e;}
+.is-accepted{background:#dcfce7;color:#166534;}
+.is-dismissed{background:#f1f5f9;color:#94a3b8;text-decoration:line-through;}
+.is-applied{background:#dbeafe;color:#1e40af;}
+
+.ic-content{flex:1;}
+.ic-title{font-size:.88rem;font-weight:600;color:var(--text);line-height:1.35;margin-bottom:3px;}
+.ic-section-ref{font-size:.72rem;color:var(--muted);display:flex;align-items:center;gap:5px;margin-bottom:6px;}
+.ic-section-ref .sr-tag{background:#f1f5f9;padding:1px 7px;border-radius:4px;font-family:var(--mono);font-size:.68rem;}
+.ic-summary{font-size:.8rem;color:var(--text);line-height:1.55;}
+
+.ic-body{
+  display:none;border-top:1px solid var(--border);
+  background:#fafbfd;
+}
+.intel-card.open .ic-body{display:block;}
+
+/* Feedback thread inside card */
+.feedback-thread{padding:14px 16px;}
+.ft-entry{
+  display:flex;gap:10px;margin-bottom:14px;
+  padding-bottom:14px;border-bottom:1px solid var(--border);
+}
+.ft-entry:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0;}
+.ft-avatar{
+  width:30px;height:30px;border-radius:50%;display:flex;align-items:center;
+  justify-content:center;font-size:.72rem;font-weight:700;flex-shrink:0;
+  margin-top:2px;
+}
+.ft-av-reviewer{background:#dbeafe;color:#1e40af;}
+.ft-av-writer{background:#dcfce7;color:#166534;}
+.ft-av-ai{background:#ede9fe;color:#6d28d9;}
+.ft-meta{font-size:.7rem;color:var(--muted);margin-bottom:4px;display:flex;align-items:center;gap:8px;}
+.ft-meta strong{color:var(--text);}
+.ft-text{font-size:.8rem;color:var(--text);line-height:1.55;}
+.ft-diff{
+  font-family:var(--mono);font-size:.75rem;background:#f8fafc;
+  border:1px solid var(--border);border-radius:6px;padding:8px 10px;
+  margin-top:6px;line-height:1.6;
+}
+.ft-diff .removed{background:#fee2e2;color:#991b1b;text-decoration:line-through;}
+.ft-diff .added{background:#dcfce7;color:#166534;}
+
+/* AI Recommendation block */
+.ai-rec-block{
+  background:linear-gradient(135deg,#faf5ff,#f3e8ff);
+  border-top:1px solid #e9d5ff;padding:14px 16px;
+}
+.ai-rec-header{
+  display:flex;align-items:center;gap:8px;margin-bottom:10px;
+}
+.ai-rec-header .ai-icon{
+  width:28px;height:28px;background:#7c3aed;border-radius:7px;
+  display:flex;align-items:center;justify-content:center;font-size:.85rem;flex-shrink:0;
+}
+.ai-rec-header .ai-title{font-size:.85rem;font-weight:700;color:#4c1d95;}
+.ai-rec-header .ai-conf{font-size:.72rem;color:#7c3aed;margin-left:auto;display:flex;align-items:center;gap:4px;}
+.ai-conf-bar{height:6px;border-radius:3px;background:#e9d5ff;overflow:hidden;width:60px;display:inline-block;vertical-align:middle;}
+.ai-conf-fill{height:100%;background:#7c3aed;border-radius:3px;}
+
+.ai-rec-body{font-size:.8rem;color:#4c1d95;line-height:1.55;margin-bottom:10px;}
+.ai-change-box{
+  background:#fff;border:1px solid #e9d5ff;border-radius:7px;
+  padding:10px 12px;margin-bottom:10px;
+}
+.ai-change-label{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#7c3aed;margin-bottom:6px;}
+.ai-change-field{font-size:.72rem;color:var(--muted);margin-bottom:3px;font-family:var(--mono);}
+.ai-change-before{background:#fee2e2;border-radius:4px;padding:4px 8px;font-size:.78rem;color:#991b1b;margin-bottom:4px;font-family:var(--mono);}
+.ai-change-after{background:#dcfce7;border-radius:4px;padding:4px 8px;font-size:.78rem;color:#166534;font-family:var(--mono);}
+
+.ai-rec-actions{display:flex;gap:7px;flex-wrap:wrap;}
+.btn-accept{background:#16a34a;color:#fff;border:none;padding:6px 14px;border-radius:7px;font-size:.78rem;font-weight:600;cursor:pointer;font-family:var(--sans);display:flex;align-items:center;gap:4px;}
+.btn-accept:hover{background:#15803d;}
+.btn-dismiss{background:transparent;color:var(--muted);border:1.5px solid var(--border2);padding:6px 12px;border-radius:7px;font-size:.78rem;font-weight:600;cursor:pointer;font-family:var(--sans);}
+.btn-dismiss:hover{background:#f1f5f9;}
+.btn-edit-config{background:var(--brand-lt);color:var(--brand);border:1.5px solid #bfdbfe;padding:6px 12px;border-radius:7px;font-size:.78rem;font-weight:600;cursor:pointer;font-family:var(--sans);display:flex;align-items:center;gap:4px;}
+.btn-edit-config:hover{background:#dbeafe;}
+.btn-view-section{background:transparent;color:var(--muted);border:none;padding:6px 10px;border-radius:7px;font-size:.78rem;cursor:pointer;font-family:var(--sans);}
+.btn-view-section:hover{color:var(--brand);background:var(--brand-lt);}
+
+/* Pattern chip */
+.pattern-chips{display:flex;flex-wrap:wrap;gap:5px;margin-top:7px;}
+.pchip{padding:2px 8px;border-radius:20px;font-size:.68rem;font-weight:600;background:#f3e8ff;color:#6d28d9;}
+
+/* Intel stat card */
+.intel-stat{
+  background:#fff;border:1px solid var(--border);border-radius:10px;
+  padding:14px 16px;box-shadow:var(--sh);display:flex;align-items:center;gap:12px;
+}
+.intel-stat .is-icon{width:38px;height:38px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;}
+.intel-stat .is-val{font-size:1.5rem;font-weight:700;line-height:1;}
+.intel-stat .is-lbl{font-size:.72rem;color:var(--muted);margin-top:2px;}
+
+/* Running animation */
+@keyframes spin{to{transform:rotate(360deg);}}
+.spinning{animation:spin 1s linear infinite;display:inline-block;}
+
+</style>
+</head>
+<body>
+
+
+<!-- ═══════════════════════════════════════════
+     PAGE 1 — DASHBOARD / REPORTS LISTING
+     ═══════════════════════════════════════════ -->
+<div class="page active" id="page-dashboard">
+
+  <!-- topbar -->
+  <div class="topbar">
+    <div class="topbar-logo">
+      <span class="badge">DA</span>
+      <span>Diva Atelier <span class="dot">AI</span></span>
+    </div>
+    <div class="topbar-search">
+      <span class="si">🔍</span>
+      <input type="text" id="dashSearch" placeholder="Search reports, templates, labels…" oninput="filterCards()"/>
+    </div>
+    <div class="topbar-right">
+      <button class="btn btn-green btn-sm" onclick="openPage('page-config','')">＋ New Configuration</button>
+      <div class="topbar-avatar">JD</div>
+    </div>
+  </div>
+
+  <div class="dash-body">
+    <!-- sidebar -->
+    <div class="dash-sidebar">
+      <div class="ds-section">
+        <div class="ds-label">Overview</div>
+        <div class="ds-item active" onclick="setDashFilter('all',this)"><span class="dsi">🏠</span> All Reports <span class="ds-count" id="cnt-all">0</span></div>
+        <div class="ds-item" onclick="setDashFilter('active',this)"><span class="dsi">✅</span> Active <span class="ds-count" id="cnt-active">0</span></div>
+        <div class="ds-item" onclick="setDashFilter('draft',this)"><span class="dsi">✏️</span> Draft <span class="ds-count" id="cnt-draft">0</span></div>
+        <div class="ds-item" onclick="setDashFilter('archived',this)"><span class="dsi">📦</span> Archived <span class="ds-count" id="cnt-archived">0</span></div>
+      </div>
+      <div class="ds-section">
+        <div class="ds-label">By Type</div>
+        <div class="ds-item" onclick="setTypeFilter('Bridal Gowns',this)"><span class="dsi">👰</span> Bridal <span class="ds-count" id="cnt-gw">0</span></div>
+        <div class="ds-item" onclick="setTypeFilter('Evening Gowns',this)"><span class="dsi">✨</span> Evening <span class="ds-count" id="cnt-env">0</span></div>
+        <div class="ds-item" onclick="setTypeFilter('Cocktail Dresses',this)"><span class="dsi">🍸</span> Cocktail <span class="ds-count" id="cnt-sw">0</span></div>
+        <div class="ds-item" onclick="setTypeFilter('Everyday Dresses',this)"><span class="dsi">👗</span> Everyday <span class="ds-count" id="cnt-air">0</span></div>
+      </div>
+      <div class="ds-section">
+        <div class="ds-label">By Region</div>
+        <div class="ds-item" onclick="setGeoFilter('US',this)"><span class="dsi">🇺🇸</span> United States <span class="ds-count" id="cnt-us">0</span></div>
+        <div class="ds-item" onclick="setGeoFilter('AU',this)"><span class="dsi">🇦🇺</span> Australia <span class="ds-count" id="cnt-au">0</span></div>
+        <div class="ds-item" onclick="setGeoFilter('UK',this)"><span class="dsi">🇬🇧</span> United Kingdom <span class="ds-count" id="cnt-uk">0</span></div>
+        <div class="ds-item" onclick="setGeoFilter('NZ',this)"><span class="dsi">🇳🇿</span> New Zealand <span class="ds-count" id="cnt-nz">0</span></div>
+      </div>
+      <div class="ds-section">
+        <div class="ds-label">By Label</div>
+        <div class="ds-item" onclick="setClientFilter('Bridal Atelier',this)"><span class="dsi">💍</span> Bridal Atelier</div>
+        <div class="ds-item" onclick="setClientFilter('Evening Couture',this)"><span class="dsi">🌙</span> Evening Couture</div>
+        <div class="ds-item" onclick="setClientFilter('Ready-to-Wear',this)"><span class="dsi">🛍️</span> Ready-to-Wear</div>
+        <div class="ds-item" onclick="setClientFilter('Resort & Occasion',this)"><span class="dsi">🌴</span> Resort & Occasion</div>
+      </div>
+    </div>
+
+    <!-- main -->
+    <div class="dash-main">
+
+      <!-- stats -->
+      <div class="stats-row" id="statsRow">
+        <div class="stat-card"><div class="stat-icon" style="background:#dbeafe;">📄</div><div class="stat-body"><div class="sv" id="stTotal">0</div><div class="sl">Total Items</div></div></div>
+        <div class="stat-card"><div class="stat-icon" style="background:#dcfce7;">✅</div><div class="stat-body"><div class="sv" id="stActive">0</div><div class="sl">Active</div></div></div>
+        <div class="stat-card"><div class="stat-icon" style="background:#fef3c7;">✏️</div><div class="stat-body"><div class="sv" id="stDraft">0</div><div class="sl">Draft</div></div></div>
+        <div class="stat-card"><div class="stat-icon" style="background:#f3e8ff;">🌍</div><div class="stat-body"><div class="sv" id="stGeo">0</div><div class="sl">Regions</div></div></div>
+      </div>
+
+      <!-- filter bar -->
+      <div class="filter-bar">
+        <button class="filter-btn active" onclick="setViewFilter('all',this)" id="fb-all">All</button>
+        <button class="filter-btn" onclick="setViewFilter('config',this)" id="fb-config">⚙️ Configurations</button>
+        <button class="filter-btn" onclick="setViewFilter('template',this)" id="fb-template">📐 Templates</button>
+        <button class="filter-btn" onclick="setViewFilter('report',this)" id="fb-report">📄 Reports</button>
+        <div style="margin-left:auto;display:flex;gap:7px;align-items:center;">
+          <select class="filter-select" id="sortSelect" onchange="filterCards()">
+            <option value="name">Sort: Name</option>
+            <option value="recent">Sort: Recently Updated</option>
+            <option value="version">Sort: Version</option>
+          </select>
+          <div class="view-toggle">
+            <button class="vt-btn active" id="vt-grid" onclick="setView('grid',this)" title="Grid">⊞</button>
+            <button class="vt-btn" id="vt-table" onclick="setView('table',this)" title="Table">☰</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- CONFIGS section -->
+      <div class="section-divider">
+        <h3>⚙️ Report Configurations</h3>
+        <div class="sd-line"></div>
+        <div class="sd-badge" id="configBadge">0 configurations</div>
+      </div>
+      <div id="configsGrid" class="cards-grid"></div>
+      <div id="configsTable" style="display:none;margin-bottom:28px;"></div>
+
+      <!-- TEMPLATES section -->
+      <div class="section-divider">
+        <h3>📐 Report Templates</h3>
+        <div class="sd-line"></div>
+        <div class="sd-badge" id="templateBadge">0 templates</div>
+      </div>
+      <div id="templatesGrid" class="tmpl-grid"></div>
+      <div id="templatesTable" style="display:none;margin-bottom:28px;"></div>
+
+      <!-- REPORTS section -->
+      <div class="section-divider">
+        <h3>📄 Generated Reports</h3>
+        <div class="sd-line"></div>
+        <div class="sd-badge" id="reportBadge">0 reports</div>
+      </div>
+      <div id="reportsGrid" class="cards-grid"></div>
+      <div id="reportsTable" style="display:none;margin-bottom:28px;"></div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     PAGE 2 — CONFIGURATION
+     ═══════════════════════════════════════════ -->
+<div class="page" id="page-config">
+  <!-- topbar -->
+  <div class="topbar">
+    <button class="topbar-back" onclick="openPage('page-dashboard','')">← Back to All Reports</button>
+    <div style="margin-left:12px;">
+      <div style="font-size:1rem;font-weight:700;color:#fff;display:flex;align-items:center;gap:5px;">
+        Report Configuration <span style="color:#60a5fa;font-size:.8rem;">✦</span>
+      </div>
+      <div style="font-size:.73rem;color:rgba(255,255,255,.55);">Add sections and set the context the AI uses to generate each part of the report.</div>
+    </div>
+    <div class="topbar-right">
+      <div class="status-dot" id="cfgStatusDot" style="width:8px;height:8px;border-radius:50%;background:var(--amber);"></div>
+      <span id="cfgStatusLabel" style="font-size:.73rem;color:rgba(255,255,255,.6);">Unsaved</span>
+      <button class="btn btn-green btn-sm" onclick="saveConfig()">💾 Save</button>
+    </div>
+  </div>
+
+  <div class="cfg-shell">
+    <!-- rail -->
+    <nav class="rail">
+      <button class="rail-btn active" title="Templates">📋</button>
+      <button class="rail-btn" title="Reports">📄</button>
+      <button class="rail-btn" title="Search">🔍</button>
+      <div class="rail-sep"></div>
+      <button class="rail-btn" title="Messages">💬</button>
+      <button class="rail-btn" title="Knowledge">📚</button>
+    </nav>
+
+    <!-- sidebar -->
+    <div class="cfg-sidebar">
+      <div class="sb-switcher">
+        <div class="sb-label">Active Configuration</div>
+        <div class="rsw">
+          <select id="configSwitcher" onchange="loadConfig(this.value)">
+            <option value="bridal">Bridal Collection — Atelier Standard</option>
+            <option value="evening">Monthly Evening Gown Review</option>
+            <option value="cocktail">Cocktail Dress Quarterly Trends</option>
+            <option value="everyday">Everyday Dress Annual Review</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="sb-meta">
+        <div class="sm-row"><span class="sm-key">Config ID</span><span class="sm-val mono" id="sbId">#C-0041</span></div>
+        <div class="sm-row"><span class="sm-key">Type</span><span class="sm-val" id="sbType">Bridal Gowns</span></div>
+        <div class="sm-row"><span class="sm-key">Client</span><span class="sm-val" id="sbClient">Bridal Atelier</span></div>
+        <div class="sm-row"><span class="sm-key">Region</span><span class="sm-val" id="sbGeo">🇺🇸 US</span></div>
+        <div class="sm-row"><span class="sm-key">Version</span><span class="bv" id="sbVer">v3</span></div>
+        <div class="sm-row"><span class="sm-key">Status</span><span class="bd" id="sbStatus">Draft</span></div>
+      </div>
+
+      <div class="sb-nav">
+        <div class="sn-label">Configuration</div>
+        <div class="sn-item active" onclick="switchMain('details',this)"><span class="sn-icon">⚙️</span> Report Configuration</div>
+        
+        <div class="sn-item" onclick="switchMain('variables',this)"><span class="sn-icon">🔤</span> Input Variables <span class="sn-badge" id="navVarBadge">4</span></div>
+        <div class="sn-item" onclick="switchMain('sections',this)"><span class="sn-icon">📑</span> Sections <span class="sn-badge" id="navSecBadge">6</span></div>
+        <div class="sn-label">Intelligence</div>
+        <div class="sn-item" onclick="switchMain('intelligence',this)"><span class="sn-icon">🧠</span> Configuration Insights <span class="sn-badge" id="navIntelBadge" style="background:#7c3aed;">3</span></div>
+        <div class="sn-label">Output</div>
+        <div class="sn-item" onclick="switchMain('preview',this)"><span class="sn-icon">{ }</span> JSON Preview</div>
+        <div class="sn-label" style="margin-top:14px;">Quick Stats</div>
+        <div style="padding:5px 8px;font-size:.73rem;color:var(--muted);">
+          <div style="margin-bottom:3px;">🔤 <span id="statVars">4</span> variables</div>
+          <div style="margin-bottom:3px;">📑 <span id="statSecs">6</span> sections</div>
+          <div>⚡ <span id="statCond">1</span> conditional</div>
+        </div>
+      </div>
+
+      <div class="sb-footer">
+        <button class="btn-new" onclick="openModal('modalNewConfig')">＋ New Configuration</button>
+      </div>
+    </div>
+
+    <!-- main cfg content -->
+    <div class="cfg-main">
+
+      <!-- ── DETAILS ── -->
+      <div class="main-panel active" id="panel-details">
+        <div class="panel-hdr"><h1>Report Configuration</h1><p>Core identity, template reference, and output settings.</p></div>
+
+        <div class="ccard">
+          <div class="ccard-hdr"><div><h3>⚙️ Configuration Details</h3></div></div>
+          <div class="fg fg-2">
+            <div class="field"><label>Configuration Name <span style="color:var(--red)">*</span></label><input type="text" id="configTitle"/></div>
+            <div class="field"><label>Business Line / Client <span style="color:var(--red)">*</span></label>
+              <select id="configClient"><option>Bridal Atelier</option><option>Evening Couture</option><option>Ready-to-Wear</option><option>Resort & Occasion</option></select>
+            </div>
+            <div class="field full"><label>Description</label><textarea rows="3" id="configDesc"></textarea></div>
+            <div class="field"><label>Style / Tone</label>
+              <select id="configStyle"><option>Technical — Spec Sheet</option><option>Editorial — Polished</option><option>Standard — Professional</option><option>Moderate — Internal</option></select>
+            </div>
+            <div class="field"><label>Report Type <span style="color:var(--red)">*</span></label>
+              <select id="configType"><option>Bridal Gowns</option><option>Evening Gowns</option><option>Cocktail Dresses</option><option>Everyday Dresses</option><option>Prom Dresses</option><option>Supplier Audit</option></select>
+            </div>
+            <div class="field"><label>Output Format</label>
+              <select id="configOutput"><option>docx</option><option>pdf</option><option>html</option></select>
+            </div>
+            <div class="field"><label>Template ID</label><input type="text" id="configTemplate" class="mono"/></div>
+            <div class="field"><label>Version</label><input type="number" id="configVersion" min="1"/></div>
+          </div>
+        </div>
+
+        <div class="ccard">
+          <div class="ccard-hdr"><div><h3>🌍 Region &amp; Locale</h3></div></div>
+          <div class="fg fg-3">
+            <div class="field">
+              <label>Country <span style="color:var(--red)">*</span></label>
+              <select id="geoCountry" onchange="updateGeoSidebar()">
+                <option value="US">🇺🇸 United States</option>
+                <option value="AU">🇦🇺 Australia</option>
+                <option value="UK">🇬🇧 United Kingdom</option>
+                <option value="NZ">🇳🇿 New Zealand</option>
+                <option value="CA">🇨🇦 Canada</option>
+                <option value="SG">🇸🇬 Singapore</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>State / Province</label>
+              <select id="geoState">
+                <option value="">Select…</option>
+                <optgroup label="🇺🇸 US States">
+                  <option>North Carolina</option><option>California</option>
+                  <option>Texas</option><option>Florida</option><option>New York</option>
+                </optgroup>
+                <optgroup label="🇦🇺 AU States">
+                  <option>New South Wales</option><option>Queensland</option>
+                  <option>Victoria</option><option>Western Australia</option>
+                </optgroup>
+                <optgroup label="🇬🇧 UK Regions">
+                  <option>England</option><option>Scotland</option><option>Wales</option>
+                </optgroup>
+                <optgroup label="🇨🇦 CA Provinces">
+                  <option>Ontario</option><option>British Columbia</option><option>Alberta</option>
+                </optgroup>
+              </select>
+            </div>
+            <div class="field">
+              <label>Date Format</label>
+              <select id="geoDateFmt">
+                <option>MM/DD/YYYY</option>
+                <option>DD/MM/YYYY</option>
+                <option>YYYY-MM-DD</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>Unit System</label>
+              <select id="geoUnits">
+                <option>Imperial (in, lb)</option>
+                <option>Metric (cm, kg)</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>Currency</label>
+              <select id="geoCurrency">
+                <option>USD ($)</option>
+                <option>AUD (A$)</option>
+                <option>GBP (£)</option>
+                <option>NZD (NZ$)</option>
+                <option>CAD (C$)</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>Language / Locale</label>
+              <select id="geoLocale">
+                <option value="en-US">en-US — English (United States)</option>
+                <option value="en-AU">en-AU — English (Australia)</option>
+                <option value="en-GB">en-GB — English (United Kingdom)</option>
+                <option value="en-NZ">en-NZ — English (New Zealand)</option>
+                <option value="en-CA">en-CA — English (Canada)</option>
+                <option value="zh-SG">zh-SG — Chinese (Singapore)</option>
+                <option value="en-SG">en-SG — English (Singapore)</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="ccard">
+          <div class="ccard-hdr"><div><h3>✅ Global Approval Workflow</h3></div></div>
+          <div class="approval-summary">
+            <span style="font-size:1rem;">👥</span>
+            <div>Requires <strong id="approverCountDisplay">2</strong> approver(s) to finalise the report.</div>
+          </div>
+          <div class="fg fg-2" style="margin-bottom:12px;">
+            <div class="field"><label>Number of Approvers Required <span style="color:var(--red)">*</span></label>
+              <input type="number" id="numApproversRequired" value="2" min="1" max="10" oninput="document.getElementById('approverCountDisplay').textContent=this.value"/>
+            </div>
+            <div class="field"><label>Default Reviewer Role</label>
+              <select id="defaultReviewer"><option>HeadDesigner</option><option>ProductionManager</option><option>QualityController</option><option>CreativeDirector</option></select>
+            </div>
+          </div>
+          <div id="globalApproverList"></div>
+          <button class="add-row green" onclick="addGlobalApprover()">＋ Add Global Approver</button>
+          <hr class="dv"/>
+          <div class="toggle-row">
+            <div class="toggle-info"><div class="tl">Section-Level Approval</div><div class="ts">Individual sections can be approved independently</div></div>
+            <label class="tog"><input type="checkbox" checked/><span class="sl"></span></label>
+          </div>
+          <div class="toggle-row">
+            <div class="toggle-info"><div class="tl">Auto-approve (≥ 0.90 quality score)</div><div class="ts">Sections meeting threshold bypass manual review</div></div>
+            <label class="tog"><input type="checkbox"/><span class="sl"></span></label>
+          </div>
+        </div>
+      </div>
+
+      
+      <!-- ── VARIABLES ── -->
+      <div class="main-panel" id="panel-variables">
+        <div class="panel-strip">
+          <div><h2>Input Variables</h2><p>Collected before generation. Use {variable_name} in queries and instructions.</p></div>
+          <button class="btn btn-primary btn-sm" onclick="openModal('modalAddVar')">＋ Add Variable</button>
+        </div>
+        <div id="varList"></div>
+      </div>
+
+      <!-- ── SECTIONS ── -->
+      <div class="main-panel" id="panel-sections">
+        <div class="panel-strip">
+          <div><h2>Report Sections</h2><p>Define hierarchical structure, content instructions, sources, and approval for each section.</p></div>
+          <button class="btn btn-outline btn-sm" onclick="openAddSectionModal(null)">＋ Add Section</button>
+        </div>
+        <div id="sectionTree"></div>
+      </div>
+
+      <!-- ── JSON PREVIEW ── -->
+      <div class="main-panel" id="panel-preview">
+        <div class="panel-strip">
+          <div><h2>JSON Preview</h2><p>Live serialised configuration — updates as you make changes.</p></div>
+          <div style="display:flex;gap:6px;">
+            <button class="btn btn-ghost btn-sm" onclick="refreshJson()">↻ Refresh</button>
+            <button class="btn btn-ghost btn-sm" onclick="copyJson()">⎘ Copy</button>
+          </div>
+        </div>
+        <div class="json-scope">
+          <label>Scope:</label>
+          <select id="jsonScopeSelect" onchange="refreshJson()">
+            <option value="full">Full Configuration</option>
+            <option value="metadata">Metadata Only</option>
+            <option value="geography">Geography Only</option>
+            <option value="variables">Variables Only</option>
+            <option value="sections">Sections Only</option>
+          </select>
+        </div>
+        <div class="json-wrap" id="jsonOut"></div>
+      </div>
+
+      <!-- ── CONFIGURATION INSIGHTS ── -->
+      <div class="main-panel" id="panel-intelligence">
+        <div class="panel-hdr"><h1>Configuration Insights</h1><p>AI-analysed reviewer comments, writer edits, and content modifications — translated into actionable configuration improvements.</p></div>
+        <div id="intelSummaryBar" style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px;"></div>
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:16px;flex-wrap:wrap;">
+          <div style="display:flex;border:1px solid var(--border2);border-radius:7px;overflow:hidden;">
+            <button class="vt-btn active" id="ifb-all" onclick="setIntelFilter('all',this)" style="padding:5px 12px;font-size:.78rem;">All <span id="ifcnt-all" style="background:#e2e8f0;color:var(--muted);border-radius:10px;padding:0 6px;font-size:.68rem;margin-left:3px;"></span></button>
+            <button class="vt-btn" id="ifb-recommendation" onclick="setIntelFilter('recommendation',this)" style="padding:5px 12px;font-size:.78rem;">🤖 Recommendations <span id="ifcnt-recommendation" style="background:#ede9fe;color:#6d28d9;border-radius:10px;padding:0 6px;font-size:.68rem;margin-left:3px;"></span></button>
+            <button class="vt-btn" id="ifb-comment" onclick="setIntelFilter('comment',this)" style="padding:5px 12px;font-size:.78rem;">💬 Comments <span id="ifcnt-comment" style="background:#dbeafe;color:#1e40af;border-radius:10px;padding:0 6px;font-size:.68rem;margin-left:3px;"></span></button>
+            <button class="vt-btn" id="ifb-edit" onclick="setIntelFilter('edit',this)" style="padding:5px 12px;font-size:.78rem;">✏️ Edits <span id="ifcnt-edit" style="background:#dcfce7;color:#166534;border-radius:10px;padding:0 6px;font-size:.68rem;margin-left:3px;"></span></button>
+          </div>
+          <select id="intelSectionFilter" onchange="renderIntelligence()" style="padding:5px 10px;border:1px solid var(--border2);border-radius:7px;font-size:.78rem;font-family:var(--sans);outline:none;background:#fff;"><option value="">All Sections</option></select>
+          <select id="intelPriorityFilter" onchange="renderIntelligence()" style="padding:5px 10px;border:1px solid var(--border2);border-radius:7px;font-size:.78rem;font-family:var(--sans);outline:none;background:#fff;"><option value="">All Priorities</option><option value="critical">🔴 Critical</option><option value="high">🟠 High</option><option value="medium">🟡 Medium</option><option value="low">⚪ Low</option></select>
+          <div style="margin-left:auto;display:flex;gap:7px;">
+            <button class="btn btn-ghost btn-sm" onclick="runAIAnalysis()">🧠 Re-analyse</button>
+            <button class="btn btn-primary btn-sm" onclick="acceptAllRecs()">✅ Accept All Open</button>
+          </div>
+        </div>
+        <div id="aiAnalysisBanner" style="background:linear-gradient(135deg,#f3e8ff,#ede9fe);border:1px solid #c4b5fd;border-radius:10px;padding:14px 18px;margin-bottom:16px;display:flex;align-items:center;gap:12px;">
+          <span style="font-size:1.4rem;">🧠</span>
+          <div style="flex:1;"><div style="font-size:.88rem;font-weight:600;color:#4c1d95;">AI Configuration Analysis Ready</div><div style="font-size:.78rem;color:#6d28d9;margin-top:2px;">Analysed <strong>14 reviewer comments</strong> and <strong>8 writer edits</strong> across 3 report runs. Found <strong>5 high-confidence improvement patterns</strong>. Last run: 2 hours ago.</div></div>
+          <button class="btn btn-sm" style="background:#7c3aed;color:#fff;" onclick="this.closest('#aiAnalysisBanner').style.display='none'">Dismiss</button>
+        </div>
+        <div id="intelFeed"></div>
+      </div>
+
+    </div><!-- /cfg-main -->
+  </div><!-- /cfg-shell -->
+</div><!-- /page-config -->
+
+<!-- ═══ MODALS ═══ -->
+<div class="overlay" id="modalAddVar">
+  <div class="modal">
+    <div class="modal-hd"><h3>Add Input Variable</h3><button class="modal-cl" onclick="closeModal('modalAddVar')">✕</button></div>
+    <div class="modal-bd">
+      <div class="fg fg-2">
+        <div class="field"><label>Variable Name *</label><input class="mono" type="text" id="mv_name" placeholder="e.g. collection_name"/><span class="hint">Used as {variable_name} in queries</span></div>
+        <div class="field"><label>Display Label *</label><input type="text" id="mv_label" placeholder="Shown to user"/></div>
+        <div class="field"><label>Type *</label>
+          <select id="mv_type"><option>FreeText</option><option>Selection</option><option>MultiSelection</option><option>Date</option><option>DateRange</option><option>Boolean</option><option>Number</option><option>Collection</option></select>
+        </div>
+        <div class="field"><label>Sort Order</label><input type="number" id="mv_sort" value="5" min="1"/></div>
+        <div class="field full"><label>Help Text</label><input type="text" id="mv_help" placeholder="Guidance shown beneath the field"/></div>
+      </div>
+      <div class="toggle-row">
+        <div class="toggle-info"><div class="tl">Required</div><div class="ts">Must be filled before generation</div></div>
+        <label class="tog"><input type="checkbox" id="mv_req" checked/><span class="sl"></span></label>
+      </div>
+    </div>
+    <div class="modal-ft">
+      <button class="btn btn-ghost btn-sm" onclick="closeModal('modalAddVar')">Cancel</button>
+      <button class="btn btn-primary btn-sm" onclick="confirmAddVar()">Add Variable</button>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" id="modalAddSection">
+  <div class="modal">
+    <div class="modal-hd"><h3>Add Section</h3><button class="modal-cl" onclick="closeModal('modalAddSection')">✕</button></div>
+    <div class="modal-bd">
+      <div class="fg fg-2">
+        <div class="field"><label>Section Number</label><input type="text" id="ms_num" placeholder="e.g. 4, 4.1"/></div>
+        <div class="field"><label>Title *</label><input type="text" id="ms_title" placeholder="Section heading"/></div>
+        <div class="field"><label>Section Type *</label>
+          <select id="ms_type"><option>ExecutiveSummary</option><option selected>Content</option><option>References</option><option>Appendix</option></select>
+        </div>
+        <div class="field"><label>Content Shape</label>
+          <select id="ms_shape"><option selected>Narrative</option><option>DataTable</option><option>Figure</option><option>Appendix</option><option>Mixed</option></select>
+        </div>
+        <div class="field"><label>Sequence</label><input type="number" id="ms_seq" value="10"/></div>
+        <div class="field"><label>Parent Section</label>
+          <select id="ms_parent"><option value="">None (top-level)</option></select>
+        </div>
+      </div>
+      <div class="toggle-row">
+        <div class="toggle-info"><div class="tl">AI Generatable</div></div>
+        <label class="tog"><input type="checkbox" id="ms_gen" checked/><span class="sl"></span></label>
+      </div>
+      <div class="toggle-row">
+        <div class="toggle-info"><div class="tl">Required</div></div>
+        <label class="tog"><input type="checkbox" id="ms_req" checked/><span class="sl"></span></label>
+      </div>
+    </div>
+    <div class="modal-ft">
+      <button class="btn btn-ghost btn-sm" onclick="closeModal('modalAddSection')">Cancel</button>
+      <button class="btn btn-primary btn-sm" onclick="confirmAddSection()">Add Section</button>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" id="modalNewConfig">
+  <div class="modal">
+    <div class="modal-hd"><h3>New Configuration</h3><button class="modal-cl" onclick="closeModal('modalNewConfig')">✕</button></div>
+    <div class="modal-bd">
+      <div class="fg fg-2">
+        <div class="field full"><label>Configuration Name *</label><input type="text" id="nr_name" placeholder="e.g. Monthly Cocktail Dress Report — Label X"/></div>
+        <div class="field"><label>Report Type</label>
+          <select id="nr_type"><option>Bridal Gowns</option><option>Evening Gowns</option><option>Cocktail Dresses</option><option>Everyday Dresses</option></select>
+        </div>
+        <div class="field"><label>Client / Business Line</label>
+          <select id="nr_client"><option>Bridal Atelier</option><option>Evening Couture</option><option>Ready-to-Wear</option></select>
+        </div>
+        <div class="field full"><label>Clone From (optional)</label>
+          <select id="nr_clone"><option value="">— Start blank —</option><option value="bridal">Bridal Collection — Atelier Standard</option><option value="evening">Monthly Evening Gown Review</option><option value="cocktail">Cocktail Dress Quarterly Trends</option><option value="everyday">Everyday Dress Annual Review</option></select>
+        </div>
+      </div>
+    </div>
+    <div class="modal-ft">
+      <button class="btn btn-ghost btn-sm" onclick="closeModal('modalNewConfig')">Cancel</button>
+      <button class="btn btn-primary btn-sm" onclick="createNewConfig()">Create Configuration</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+// ══════════════════════════════════════════════════════
+//  COMBINED JS (Dashboard + Configuration)
+// ══════════════════════════════════════════════════════
+
+// ── DATA ──────────────────────────────────────────────
+const CONFIGS = {
+  bridal: {
+    id:'C-0041', name:'Bridal Collection Report — Atelier Standard', version:3, status:'Active',
+    type:'Bridal Gowns', client:'Bridal Atelier', country:'US',
+    output:'docx', template:'TPL-BRD-ATL-v2', style:'Technical — Spec Sheet',
+    desc:'Standard collection report for bridal gowns. Supports quarterly and annual reporting cycles with dynamic section inclusion for made-to-measure orders.',
+    numApproversRequired:2, globalApprovers:[{role:'HeadDesigner',sla:48,order:1,required:true}],
+    lastUpdated:'2025-06-01', sections_count:6, vars_count:4,
+    geography:{country:'US',state:'New York',city:'New York',studioName:'Madison Avenue Salon',studioId:'STU-10022',sizeSystem:'US Women\'s Sizing',labellingAuthority:'FTC',licenceNo:'RN-44709',labellingStandard:'Textile Fiber Products Identification Act',cadence:'Quarterly',sizeStandards:['ASTM D5585','Bridal Size Chart']},
+    variables:[
+      {id:'v1',name:'collection_season',label:'Collection Season / Dates',type:'DateRange',sort:1,required:true,help:'Select the selling period',validation:{maxSpanDays:92,maxDate:'today'}},
+      {id:'v2',name:'report_quarter',label:'Reporting Quarter',type:'Selection',sort:2,required:true,help:'Quarter this report covers',options:['Q1','Q2','Q3','Q4']},
+      {id:'v3',name:'made_to_measure_offered',label:'Made-to-Measure Offered This Quarter?',type:'Boolean',sort:3,required:true,help:'Controls made-to-measure section inclusion'},
+      {id:'v4',name:'collection_name',label:'Collection Name',type:'FreeText',sort:4,required:true,help:'Name of the bridal collection, e.g. Aurelia'}
+    ],
+    sections:[
+      {id:'s1',num:'ES',title:'Executive Summary',type:'ExecutiveSummary',shape:'Text',seq:0,parent:'',required:true,generatable:true,instructions:'Write a concise executive summary covering key findings for {collection_season}.',sources:[],approvers:[{role:'HeadDesigner',sla:24,order:1,required:true}],condition:null},
+      {id:'s2',num:'1',title:'Collection Overview',type:'Content',shape:'Text',seq:1,parent:'',required:true,generatable:true,instructions:'Collection background and brand context for {collection_season}.',sources:[{id:'src1',priority:1,index:'prior-reports',query:'collection overview background {collection_name}',mode:'Semantic',topK:3,minScore:0.70,filter:'Narrative',fallback:'GenerateWithoutContext'}],approvers:[],condition:null},
+      {id:'s3',num:'2',title:'Design Story & Inspiration',type:'Content',shape:'Mixed',seq:2,parent:'',required:true,generatable:true,instructions:'Describe the collection\'s inspiration, silhouettes, fabrics, and embellishment.',sources:[],approvers:[],condition:null},
+      {id:'s4',num:'3',title:'Style Performance',type:'Content',shape:'Table',seq:3,parent:'',required:true,generatable:true,instructions:'Present tabular sales and sell-through results for all styles.',sources:[],approvers:[],condition:null},
+      {id:'s5',num:'3.1',title:'Silhouette & Neckline Breakdown',type:'Content',shape:'Table',seq:1,parent:'s4',required:true,generatable:true,instructions:'Present sales by silhouette and neckline in tabular format.',sources:[],approvers:[],condition:null},
+      {id:'s6',num:'3.2',title:'Made-to-Measure Orders',type:'Content',shape:'Table',seq:2,parent:'s4',required:false,generatable:true,instructions:'Present made-to-measure order volumes and lead times.',sources:[],approvers:[],condition:{variable:'made_to_measure_offered',operator:'equals',value:'Yes'}}
+    ]
+  },
+  evening: {
+    id:'C-0012', name:'Monthly Evening Gown Review', version:2, status:'Active',
+    type:'Evening Gowns', client:'Evening Couture', country:'AU',
+    output:'pdf', template:'TPL-EVE-v1', style:'Standard — Professional',
+    desc:'Monthly sales and merchandising review for evening gowns covering fabric performance, fit feedback, embellishment quality, and stock levels across showrooms.',
+    numApproversRequired:3, globalApprovers:[{role:'ProductionManager',sla:48,order:1,required:true},{role:'QualityController',sla:24,order:2,required:true}],
+    lastUpdated:'2025-05-28', sections_count:4, vars_count:3,
+    geography:{country:'AU',state:'Queensland',city:'Brisbane',studioName:'Brisbane Flagship Showroom',studioId:'STU-BNE01',sizeSystem:'AU Women\'s Sizing',labellingAuthority:'ACCC',licenceNo:'ABN-BNE001',labellingStandard:'AS/NZS 1957',cadence:'Monthly',sizeStandards:['AS 1344','AU Size Chart']},
+    variables:[
+      {id:'v1',name:'sales_month',label:'Sales Month',type:'Date',sort:1,required:true,help:'Month of selling activity'},
+      {id:'v2',name:'store_name',label:'Showroom Name',type:'FreeText',sort:2,required:true,help:'Full showroom name as per store directory'},
+      {id:'v3',name:'embellishment_review_done',label:'Embellishment Review Completed?',type:'Boolean',sort:3,required:true,help:''}
+    ],
+    sections:[
+      {id:'s1',num:'ES',title:'Executive Summary',type:'ExecutiveSummary',shape:'Text',seq:0,parent:'',required:true,generatable:true,instructions:'Summarise monthly sales outcomes for {store_name} for {sales_month}.',sources:[],approvers:[{role:'ProductionManager',sla:48,order:1,required:true}],condition:null},
+      {id:'s2',num:'1',title:'Introduction & Showroom Overview',type:'Content',shape:'Text',seq:1,parent:'',required:true,generatable:true,instructions:'Describe {store_name}, the evening gown range, and scope.',sources:[{id:'src1',priority:1,index:'prior-reports',query:'evening gown showroom overview {store_name}',mode:'Semantic',topK:3,minScore:0.65,filter:'Narrative',fallback:'GenerateWithoutContext'}],approvers:[],condition:null},
+      {id:'s3',num:'2',title:'Fabric & Fit Feedback',type:'Content',shape:'Mixed',seq:2,parent:'',required:true,generatable:true,instructions:'Present and interpret fabric and fit feedback from fittings and returns.',sources:[],approvers:[],condition:null},
+      {id:'s4',num:'3',title:'Embellishment & Beading Review',type:'Content',shape:'Table',seq:3,parent:'',required:false,generatable:true,instructions:'Present embellishment and beading quality data.',sources:[],approvers:[],condition:{variable:'embellishment_review_done',operator:'equals',value:'true'}}
+    ]
+  },
+  cocktail: {
+    id:'C-0023', name:'Cocktail Dress Quarterly Trends', version:1, status:'Draft',
+    type:'Cocktail Dresses', client:'Ready-to-Wear', country:'US',
+    output:'docx', template:'TPL-CKT-v1', style:'Standard — Professional',
+    desc:'Quarterly trend and sell-through report for cocktail dresses across ready-to-wear lines. Includes statistical trend analysis.',
+    numApproversRequired:1, globalApprovers:[],
+    lastUpdated:'2025-05-10', sections_count:3, vars_count:2,
+    geography:{country:'US',state:'California',city:'Los Angeles',studioName:'Downtown LA Showroom',studioId:'STU-LA405',sizeSystem:'US Women\'s Sizing',labellingAuthority:'FTC',licenceNo:'RN-LA405',labellingStandard:'Care Labeling Rule',cadence:'Quarterly',sizeStandards:['ASTM D5585','Misses Size Chart']},
+    variables:[
+      {id:'v1',name:'trend_quarter',label:'Trend Quarter',type:'Selection',sort:1,required:true,help:'',options:['Q1 (Jan-Mar)','Q2 (Apr-Jun)','Q3 (Jul-Sep)','Q4 (Oct-Dec)']},
+      {id:'v2',name:'line_number',label:'Line Number',type:'FreeText',sort:2,required:true,help:'8-digit line number'}
+    ],
+    sections:[
+      {id:'s1',num:'ES',title:'Executive Summary',type:'ExecutiveSummary',shape:'Text',seq:0,parent:'',required:true,generatable:true,instructions:'Summarise quarterly cocktail dress trends and sell-through.',sources:[],approvers:[],condition:null},
+      {id:'s2',num:'1',title:'Introduction',type:'Content',shape:'Text',seq:1,parent:'',required:true,generatable:true,instructions:'Overview of the cocktail dress trend programme.',sources:[],approvers:[],condition:null},
+      {id:'s3',num:'2',title:'Sell-Through Results',type:'Content',shape:'Table',seq:2,parent:'',required:true,generatable:true,instructions:'Present sell-through results for all styles and colourways.',sources:[{id:'src1',priority:1,index:'sales-data',query:'cocktail dress sell-through {line_number} {trend_quarter}',mode:'Hybrid',topK:5,minScore:0.70,filter:'Table',fallback:'GenerateWithoutContext'}],approvers:[],condition:null}
+    ]
+  },
+  everyday: {
+    id:'C-0034', name:'Everyday Dress Annual Review', version:1, status:'Draft',
+    type:'Everyday Dresses', client:'Resort & Occasion', country:'AU',
+    output:'pdf', template:'TPL-EVD-v1', style:'Editorial — Polished',
+    desc:'Annual review of everyday and resort dresses covering fabric, sizing, colour palette, and seasonal performance.',
+    numApproversRequired:2, globalApprovers:[{role:'CreativeDirector',sla:72,order:1,required:true}],
+    lastUpdated:'2025-04-15', sections_count:3, vars_count:2,
+    geography:{country:'AU',state:'Western Australia',city:'Perth',studioName:'Perth Design Studio',studioId:'STU-PER01',sizeSystem:'AU Women\'s Sizing',labellingAuthority:'ACCC',licenceNo:'ABN-PER001',labellingStandard:'AS/NZS 1957',cadence:'Annual',sizeStandards:['AS 1344','Extended Size Chart']},
+    variables:[
+      {id:'v1',name:'reporting_year',label:'Reporting Year',type:'Number',sort:1,required:true,help:''},
+      {id:'v2',name:'label_name',label:'Label Name',type:'FreeText',sort:2,required:true,help:''}
+    ],
+    sections:[
+      {id:'s1',num:'ES',title:'Executive Summary',type:'ExecutiveSummary',shape:'Text',seq:0,parent:'',required:true,generatable:true,instructions:'Annual dress performance summary for {label_name} — {reporting_year}.',sources:[],approvers:[{role:'CreativeDirector',sla:72,order:1,required:true}],condition:null},
+      {id:'s2',num:'1',title:'Introduction',type:'Content',shape:'Text',seq:1,parent:'',required:true,generatable:true,instructions:'Purpose, scope, and seasonal calendar for annual dress reporting.',sources:[],approvers:[],condition:null},
+      {id:'s3',num:'2',title:'Fabric & Colour Palette',type:'Content',shape:'Mixed',seq:2,parent:'',required:true,generatable:true,instructions:'Present and assess fabric and colour palette performance for {reporting_year}.',sources:[],approvers:[],condition:null}
+    ]
+  }
+};
+
+// Extra data for templates and generated reports
+const TEMPLATES = [
+  {id:'T-001',name:'Bridal Collection Standard Template',client:'Bridal Atelier',type:'Bridal Gowns',country:'US',version:2,status:'Active',lastUpdated:'2025-05-20',sections:8,desc:'Base Word template with lookbook-style headers, contents page, and appendix styles.'},
+  {id:'T-002',name:'Evening Gown Review Template',client:'Evening Couture',type:'Evening Gowns',country:'AU',version:1,status:'Active',lastUpdated:'2025-04-10',sections:6,desc:'Monthly review template with standard sales and fit tables.'},
+  {id:'T-003',name:'Cocktail Dress Trend Template',client:'Ready-to-Wear',type:'Cocktail Dresses',country:'US',version:1,status:'Draft',lastUpdated:'2025-03-01',sections:5,desc:'Standard trend report for cocktail dress lines.'},
+  {id:'T-004',name:'Everyday Dress Annual Template',client:'Resort & Occasion',type:'Everyday Dresses',country:'AU',version:1,status:'Active',lastUpdated:'2025-05-05',sections:7,desc:'Annual review template aligned with seasonal buying calendars.'},
+  {id:'T-005',name:'Prom Season Lookbook Template',client:'Ready-to-Wear',type:'Prom Dresses',country:'US',version:3,status:'Active',lastUpdated:'2025-06-02',sections:9,desc:'Lookbook and line-sheet template for prom season collections.'},
+  {id:'T-006',name:'Supplier Audit Template',client:'Resort & Occasion',type:'Supplier Audit',country:'AU',version:2,status:'Review',lastUpdated:'2025-05-25',sections:10,desc:'Fabric and factory supplier audit template covering quality, ethics, and lead times.'},
+];
+
+const GENERATED_REPORTS = [
+  {id:'GR-0891',name:'Bridal Collection Q2 2025 — Madison Avenue',config:'C-0041',client:'Bridal Atelier',type:'Bridal Gowns',country:'US',state:'NY',status:'Active',generatedDate:'2025-06-01',size:'2.4 MB',pages:34},
+  {id:'GR-0890',name:'Bridal Collection Q1 2025 — Madison Avenue',config:'C-0041',client:'Bridal Atelier',type:'Bridal Gowns',country:'US',state:'NY',status:'Archived',generatedDate:'2025-03-10',size:'2.1 MB',pages:31},
+  {id:'GR-0785',name:'Evening Gown Review May 2025 — Brisbane',config:'C-0012',client:'Evening Couture',type:'Evening Gowns',country:'AU',state:'QLD',status:'Active',generatedDate:'2025-05-28',size:'3.8 MB',pages:52},
+  {id:'GR-0784',name:'Evening Gown Review Apr 2025 — Brisbane',config:'C-0012',client:'Evening Couture',type:'Evening Gowns',country:'AU',state:'QLD',status:'Archived',generatedDate:'2025-04-29',size:'3.6 MB',pages:49},
+  {id:'GR-0701',name:'Everyday Dress Annual 2024 — Perth',config:'C-0034',client:'Resort & Occasion',type:'Everyday Dresses',country:'AU',state:'WA',status:'Review',generatedDate:'2025-04-15',size:'5.2 MB',pages:87},
+];
+
+// ── PAGE NAVIGATION ────────────────────────────────────
+function openPage(pageId, configKey) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById(pageId).classList.add('active');
+  if (pageId === 'page-config') {
+    if (configKey && CONFIGS[configKey]) {
+      document.getElementById('configSwitcher').value = configKey;
+      loadConfig(configKey);
+    } else if (!R) {
+      loadConfig('bridal');
+    }
+  }
+  if (pageId === 'page-dashboard') {
+    renderDashboard();
+  }
+}
+
+// ══════════════════════════════════════════════════════
+//  DASHBOARD
+// ══════════════════════════════════════════════════════
+let dashFilter = 'all';
+let dashTypeFilter = '';
+let dashGeoFilter = '';
+let dashClientFilter = '';
+let dashViewFilter = 'all';
+let viewMode = 'grid';
+
+const FLAGS = {US:'🇺🇸',AU:'🇦🇺',UK:'🇬🇧',NZ:'🇳🇿',CA:'🇨🇦',SG:'🇸🇬'};
+const TYPE_COLORS = {
+  'Bridal Gowns':'rtag-gw','Evening Gowns':'rtag-env',
+  'Cocktail Dresses':'rtag-sw','Everyday Dresses':'rtag-air','Prom Dresses':'rtag-const'
+};
+
+function renderDashboard() {
+  const allConfigs = Object.entries(CONFIGS).map(([k,v]) => ({...v, _key:k, _kind:'config'}));
+
+  // stats
+  document.getElementById('stTotal').textContent = allConfigs.length + TEMPLATES.length + GENERATED_REPORTS.length;
+  document.getElementById('stActive').textContent = allConfigs.filter(r=>r.status==='Active').length + GENERATED_REPORTS.filter(r=>r.status==='Active').length;
+  document.getElementById('stDraft').textContent = allConfigs.filter(r=>r.status==='Draft').length;
+  const regions = new Set([...allConfigs.map(r=>r.country),...GENERATED_REPORTS.map(r=>r.country)]);
+  document.getElementById('stGeo').textContent = regions.size;
+
+  // sidebar counts
+  document.getElementById('cnt-all').textContent = allConfigs.length;
+  document.getElementById('cnt-active').textContent = allConfigs.filter(r=>r.status==='Active').length;
+  document.getElementById('cnt-draft').textContent = allConfigs.filter(r=>r.status==='Draft').length;
+  document.getElementById('cnt-archived').textContent = 0;
+  document.getElementById('cnt-gw').textContent = allConfigs.filter(r=>r.type==='Bridal Gowns').length;
+  document.getElementById('cnt-env').textContent = allConfigs.filter(r=>r.type==='Evening Gowns').length;
+  document.getElementById('cnt-sw').textContent = allConfigs.filter(r=>r.type==='Cocktail Dresses').length;
+  document.getElementById('cnt-air').textContent = allConfigs.filter(r=>r.type==='Everyday Dresses').length;
+  document.getElementById('cnt-us').textContent = allConfigs.filter(r=>r.country==='US').length;
+  document.getElementById('cnt-au').textContent = allConfigs.filter(r=>r.country==='AU').length;
+  document.getElementById('cnt-uk').textContent = allConfigs.filter(r=>r.country==='UK').length;
+  document.getElementById('cnt-nz').textContent = allConfigs.filter(r=>r.country==='NZ').length;
+
+  renderConfigs(allConfigs);
+  renderTemplates();
+  renderGeneratedReports();
+}
+
+function getFilteredConfigs(all) {
+  const q = (document.getElementById('dashSearch')?.value||'').toLowerCase();
+  return all.filter(r => {
+    if (dashFilter === 'active' && r.status !== 'Active') return false;
+    if (dashFilter === 'draft' && r.status !== 'Draft') return false;
+    if (dashTypeFilter && r.type !== dashTypeFilter) return false;
+    if (dashGeoFilter && r.country !== dashGeoFilter) return false;
+    if (dashClientFilter && r.client !== dashClientFilter) return false;
+    if (q && !r.name.toLowerCase().includes(q) && !r.client.toLowerCase().includes(q) && !r.type.toLowerCase().includes(q)) return false;
+    return true;
+  });
+}
+
+function renderConfigs(all) {
+  const filtered = getFilteredConfigs(all);
+  document.getElementById('configBadge').textContent = filtered.length + ' configuration' + (filtered.length!==1?'s':'');
+
+  if (viewMode === 'grid') {
+    document.getElementById('configsGrid').style.display = 'grid';
+    document.getElementById('configsTable').style.display = 'none';
+    const grid = document.getElementById('configsGrid');
+    grid.innerHTML = '';
+    if (!filtered.length) { grid.innerHTML = '<div class="empty-state" style="grid-column:1/-1"><div class="ei">🔍</div><h3>No configurations match your filter</h3><p>Try adjusting filters or search.</p></div>'; return; }
+    filtered.forEach(r => grid.appendChild(buildConfigCard(r)));
+  } else {
+    document.getElementById('configsGrid').style.display = 'none';
+    document.getElementById('configsTable').style.display = 'block';
+    const tbl = document.getElementById('configsTable');
+    tbl.innerHTML = '';
+    tbl.appendChild(buildConfigTable(filtered));
+  }
+}
+
+function buildConfigCard(r) {
+  const typeEmoji = ({'Bridal Gowns':'👰','Evening Gowns':'✨','Cocktail Dresses':'🍸','Everyday Dresses':'👗','Prom Dresses':'💃'})[r.type]||'📄';
+  const iconBg = ({'Bridal Gowns':'#dbeafe','Evening Gowns':'#dcfce7','Cocktail Dresses':'#e0f2fe','Everyday Dresses':'#fce7f3','Prom Dresses':'#fef3c7'})[r.type]||'#f1f5f9';
+
+  const card = document.createElement('div');
+  card.className = 'rcard';
+  card.addEventListener('click', () => openPage('page-config', r._key));
+
+  const top = document.createElement('div'); top.className = 'rcard-top';
+  const hdr = document.createElement('div'); hdr.className = 'rcard-header';
+  const icon = document.createElement('div'); icon.className = 'rcard-icon';
+  icon.style.background = iconBg; icon.textContent = typeEmoji;
+  const tb = document.createElement('div'); tb.className = 'rcard-title-block';
+  const title = document.createElement('div'); title.className = 'rcard-title'; title.textContent = r.name;
+  const idEl = document.createElement('div'); idEl.className = 'rcard-id'; idEl.textContent = '#' + r.id + ' · v' + r.version;
+  tb.appendChild(title); tb.appendChild(idEl);
+  hdr.appendChild(icon); hdr.appendChild(tb);
+
+  const desc = document.createElement('div'); desc.className = 'rcard-desc'; desc.textContent = r.desc;
+  const tags = document.createElement('div'); tags.className = 'rcard-tags';
+  const tc = TYPE_COLORS[r.type] || 'rtag-env';
+  const t1 = document.createElement('span'); t1.className = 'rtag ' + tc; t1.textContent = r.type;
+  const t2 = document.createElement('span'); t2.className = 'rtag rtag-client'; t2.textContent = r.client.split(' ')[0];
+  tags.appendChild(t1); tags.appendChild(t2);
+
+  const geo = document.createElement('div'); geo.className = 'rcard-geo';
+  const g = r.geography;
+  geo.innerHTML = '<span class="flag">' + (FLAGS[r.country]||'🌍') + '</span>' +
+    (g ? g.state + ', ' + r.country : r.country) +
+    (g && g.studioName ? ' · ' + g.studioName : '');
+
+  top.appendChild(hdr); top.appendChild(desc); top.appendChild(tags); top.appendChild(geo);
+
+  const footer = document.createElement('div'); footer.className = 'rcard-footer';
+  const meta = document.createElement('div'); meta.className = 'rcard-meta';
+  const m1 = document.createElement('span'); m1.className = 'rcard-meta-item'; m1.textContent = '📑 ' + r.sections_count + ' sections';
+  const m2 = document.createElement('span'); m2.className = 'rcard-meta-item'; m2.textContent = '🔤 ' + r.vars_count + ' variables';
+  meta.appendChild(m1); meta.appendChild(m2);
+  const stEl = document.createElement('span');
+  stEl.className = 'rcard-status ' + (r.status==='Active'?'st-active':r.status==='Draft'?'st-draft':'st-review');
+  stEl.textContent = r.status;
+  const action = document.createElement('span'); action.className = 'rcard-action'; action.textContent = 'Configure →';
+  footer.appendChild(meta);
+  const right = document.createElement('div'); right.style.cssText='display:flex;align-items:center;gap:8px;';
+  right.appendChild(stEl); right.appendChild(action);
+  footer.appendChild(right);
+
+  card.appendChild(top); card.appendChild(footer);
+  return card;
+}
+
+function buildConfigTable(data) {
+  const tbl = document.createElement('table'); tbl.className = 'report-table';
+  tbl.innerHTML = '<thead><tr><th>Configuration</th><th>Type</th><th>Client</th><th>Geography</th><th>Version</th><th>Status</th><th>Updated</th><th></th></tr></thead>';
+  const tbody = document.createElement('tbody');
+  data.forEach(r => {
+    const tr = document.createElement('tr');
+    tr.addEventListener('click', () => openPage('page-config', r._key));
+    const g = r.geography;
+    tr.innerHTML = '<td><div class="rt-title">' + r.name + '</div><div class="rt-id">#' + r.id + '</div></td>' +
+      '<td><span class="rtag ' + (TYPE_COLORS[r.type]||'rtag-env') + '">' + r.type + '</span></td>' +
+      '<td style="font-size:.8rem;">' + r.client + '</td>' +
+      '<td><div class="rt-geo">' + (FLAGS[r.country]||'🌍') + ' ' + (g ? g.state + ', ' + r.country : r.country) + '</div></td>' +
+      '<td style="font-family:var(--mono);font-size:.78rem;">v' + r.version + '</td>' +
+      '<td><span class="rcard-status ' + (r.status==='Active'?'st-active':r.status==='Draft'?'st-draft':'st-review') + '">' + r.status + '</span></td>' +
+      '<td style="font-size:.75rem;color:var(--muted);">' + r.lastUpdated + '</td>' +
+      '<td><span class="rcard-action" style="font-size:.75rem;">Configure →</span></td>';
+    tbody.appendChild(tr);
+  });
+  tbl.appendChild(tbody);
+  return tbl;
+}
+
+function renderTemplates() {
+  const q = (document.getElementById('dashSearch')?.value||'').toLowerCase();
+  let filtered = TEMPLATES.filter(t => {
+    if (dashGeoFilter && t.country !== dashGeoFilter) return false;
+    if (dashClientFilter && t.client !== dashClientFilter) return false;
+    if (q && !t.name.toLowerCase().includes(q) && !t.client.toLowerCase().includes(q)) return false;
+    return true;
+  });
+  document.getElementById('templateBadge').textContent = filtered.length + ' template' + (filtered.length!==1?'s':'');
+
+  if (viewMode === 'grid') {
+    document.getElementById('templatesGrid').style.display = 'grid';
+    document.getElementById('templatesTable').style.display = 'none';
+    const grid = document.getElementById('templatesGrid');
+    grid.innerHTML = '';
+    filtered.forEach(t => {
+      const iconBg = ({'Bridal Gowns':'#dbeafe','Evening Gowns':'#dcfce7','Cocktail Dresses':'#e0f2fe','Everyday Dresses':'#fce7f3','Prom Dresses':'#fef3c7'})[t.type]||'#f1f5f9';
+      const typeEmoji = ({'Bridal Gowns':'👰','Evening Gowns':'✨','Cocktail Dresses':'🍸','Everyday Dresses':'👗','Prom Dresses':'💃','Supplier Audit':'🧵'})[t.type]||'📄';
+      const card = document.createElement('div'); card.className = 'tmpl-card';
+      card.addEventListener('click', () => { showToast('Template "'+t.name+'" — open a configuration to use it.'); });
+      const hdr = document.createElement('div'); hdr.className = 'tmpl-card-header';
+      const ic = document.createElement('div'); ic.className = 'tmpl-icon'; ic.style.background = iconBg; ic.textContent = typeEmoji;
+      const tb = document.createElement('div');
+      const tn = document.createElement('div'); tn.className = 'tmpl-title'; tn.textContent = t.name;
+      const tc2 = document.createElement('div'); tc2.className = 'tmpl-client'; tc2.textContent = t.client;
+      tb.appendChild(tn); tb.appendChild(tc2);
+      hdr.appendChild(ic); hdr.appendChild(tb);
+      const meta = document.createElement('div'); meta.className = 'tmpl-meta';
+      const st = document.createElement('span'); st.className = 'rcard-status ' + (t.status==='Active'?'st-active':t.status==='Draft'?'st-draft':'st-review'); st.textContent = t.status;
+      const sc = document.createElement('span'); sc.className = 'rtag'; sc.style.cssText='background:#f1f5f9;color:#64748b;padding:2px 7px;border-radius:20px;font-size:.65rem;font-weight:700;'; sc.textContent = t.sections + ' sections';
+      meta.appendChild(st); meta.appendChild(sc);
+      const foot = document.createElement('div'); foot.className = 'tmpl-footer';
+      const gr = document.createElement('div'); gr.className = 'tmpl-geo-row';
+      gr.textContent = (FLAGS[t.country]||'🌍') + ' ' + t.country + ' · v' + t.version;
+      const act = document.createElement('span'); act.style.cssText='font-size:.73rem;font-weight:600;color:var(--brand);'; act.textContent = 'Use →';
+      foot.appendChild(gr); foot.appendChild(act);
+      card.appendChild(hdr); card.appendChild(meta); card.appendChild(foot);
+      grid.appendChild(card);
+    });
+  } else {
+    document.getElementById('templatesGrid').style.display = 'none';
+    document.getElementById('templatesTable').style.display = 'block';
+    const tbl = document.getElementById('templatesTable');
+    tbl.innerHTML = '';
+    const table = document.createElement('table'); table.className = 'report-table';
+    table.innerHTML = '<thead><tr><th>Template</th><th>Type</th><th>Client</th><th>Country</th><th>Sections</th><th>Status</th><th>Updated</th></tr></thead>';
+    const tbody = document.createElement('tbody');
+    filtered.forEach(t => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = '<td><div class="rt-title">'+t.name+'</div><div class="rt-id">#'+t.id+'</div></td><td><span class="rtag '+(TYPE_COLORS[t.type]||'rtag-env')+'">'+t.type+'</span></td><td style="font-size:.8rem;">'+t.client+'</td><td>'+FLAGS[t.country]+'</td><td>'+t.sections+'</td><td><span class="rcard-status '+(t.status==='Active'?'st-active':t.status==='Draft'?'st-draft':'st-review')+'">'+t.status+'</span></td><td style="font-size:.75rem;color:var(--muted);">'+t.lastUpdated+'</td>';
+      tbody.appendChild(tr);
+    });
+    table.appendChild(tbody); tbl.appendChild(table);
+  }
+}
+
+function renderGeneratedReports() {
+  const q = (document.getElementById('dashSearch')?.value||'').toLowerCase();
+  let filtered = GENERATED_REPORTS.filter(r => {
+    if (dashGeoFilter && r.country !== dashGeoFilter) return false;
+    if (dashClientFilter && r.client !== dashClientFilter) return false;
+    if (q && !r.name.toLowerCase().includes(q) && !r.client.toLowerCase().includes(q)) return false;
+    return true;
+  });
+  document.getElementById('reportBadge').textContent = filtered.length + ' report' + (filtered.length!==1?'s':'');
+
+  if (viewMode === 'grid') {
+    document.getElementById('reportsGrid').style.display = 'grid';
+    document.getElementById('reportsTable').style.display = 'none';
+    const grid = document.getElementById('reportsGrid');
+    grid.innerHTML = '';
+    filtered.forEach(r => {
+      const card = document.createElement('div'); card.className = 'rcard';
+      card.addEventListener('click', () => showToast('Opening report "'+r.name+'"…'));
+      const top = document.createElement('div'); top.className = 'rcard-top';
+      const iconBg = ({'Bridal Gowns':'#dbeafe','Evening Gowns':'#dcfce7','Cocktail Dresses':'#e0f2fe','Everyday Dresses':'#fce7f3'})[r.type]||'#f1f5f9';
+      const typeEmoji = ({'Bridal Gowns':'👰','Evening Gowns':'✨','Cocktail Dresses':'🍸','Everyday Dresses':'👗'})[r.type]||'📄';
+      top.innerHTML = '<div class="rcard-header"><div class="rcard-icon" style="background:'+iconBg+'">'+typeEmoji+'</div><div class="rcard-title-block"><div class="rcard-title">'+r.name+'</div><div class="rcard-id">#'+r.id+' · Config '+r.config+'</div></div></div>';
+      const geo = document.createElement('div'); geo.className='rcard-geo';
+      geo.innerHTML = (FLAGS[r.country]||'🌍') + ' ' + r.state + ', ' + r.country;
+      top.appendChild(geo);
+      const footer = document.createElement('div'); footer.className = 'rcard-footer';
+      footer.innerHTML = '<div class="rcard-meta"><span class="rcard-meta-item">📅 '+r.generatedDate+'</span><span class="rcard-meta-item">📄 '+r.pages+' pp</span><span class="rcard-meta-item">💾 '+r.size+'</span></div><span class="rcard-status '+(r.status==='Active'?'st-active':r.status==='Archived'?'st-archived':'st-review')+'">'+r.status+'</span>';
+      card.appendChild(top); card.appendChild(footer);
+      grid.appendChild(card);
+    });
+  } else {
+    document.getElementById('reportsGrid').style.display = 'none';
+    document.getElementById('reportsTable').style.display = 'block';
+    const tbl = document.getElementById('reportsTable');
+    tbl.innerHTML = '';
+    const table = document.createElement('table'); table.className = 'report-table';
+    table.innerHTML = '<thead><tr><th>Report</th><th>Type</th><th>Client</th><th>Geography</th><th>Generated</th><th>Pages</th><th>Status</th></tr></thead>';
+    const tbody = document.createElement('tbody');
+    filtered.forEach(r => {
+      const tr = document.createElement('tr');
+      tr.addEventListener('click', () => showToast('Opening "'+r.name+'"…'));
+      tr.innerHTML = '<td><div class="rt-title">'+r.name+'</div><div class="rt-id">#'+r.id+'</div></td><td><span class="rtag '+(TYPE_COLORS[r.type]||'rtag-env')+'">'+r.type+'</span></td><td style="font-size:.8rem;">'+r.client+'</td><td class="rt-geo">'+FLAGS[r.country]+' '+r.state+', '+r.country+'</td><td style="font-size:.75rem;">'+r.generatedDate+'</td><td>'+r.pages+'</td><td><span class="rcard-status '+(r.status==='Active'?'st-active':r.status==='Archived'?'st-archived':'st-review')+'">'+r.status+'</span></td>';
+      tbody.appendChild(tr);
+    });
+    table.appendChild(tbody); tbl.appendChild(table);
+  }
+}
+
+function filterCards() {
+  const all = Object.entries(CONFIGS).map(([k,v]) => ({...v, _key:k, _kind:'config'}));
+  renderConfigs(all);
+  renderTemplates();
+  renderGeneratedReports();
+}
+
+function setDashFilter(f, el) {
+  dashFilter = f; dashTypeFilter = ''; dashGeoFilter = ''; dashClientFilter = '';
+  document.querySelectorAll('.ds-item').forEach(i => i.classList.remove('active'));
+  el.classList.add('active');
+  filterCards();
+}
+function setTypeFilter(t, el) {
+  dashTypeFilter = dashTypeFilter===t?'':t; dashFilter='all'; dashGeoFilter='';dashClientFilter='';
+  document.querySelectorAll('.ds-item').forEach(i => i.classList.remove('active'));
+  el.classList.toggle('active');
+  filterCards();
+}
+function setGeoFilter(g, el) {
+  dashGeoFilter = dashGeoFilter===g?'':g; dashFilter='all'; dashTypeFilter='';dashClientFilter='';
+  document.querySelectorAll('.ds-item').forEach(i => i.classList.remove('active'));
+  el.classList.toggle('active');
+  filterCards();
+}
+function setClientFilter(c, el) {
+  dashClientFilter = dashClientFilter===c?'':c; dashFilter='all'; dashTypeFilter='';dashGeoFilter='';
+  document.querySelectorAll('.ds-item').forEach(i => i.classList.remove('active'));
+  el.classList.toggle('active');
+  filterCards();
+}
+function setViewFilter(f, el) {
+  dashViewFilter = f;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  const showConfigs = f==='all'||f==='config';
+  const showTemplates = f==='all'||f==='template';
+  const showReports = f==='all'||f==='report';
+  document.querySelectorAll('.section-divider').forEach((d,i) => {
+    d.style.display = [showConfigs,showTemplates,showReports][i] ? '' : 'none';
+  });
+  document.getElementById('configsGrid').parentElement.style.display = showConfigs ? '' : 'none';
+  filterCards();
+}
+function setView(v, el) {
+  viewMode = v;
+  document.querySelectorAll('.vt-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  filterCards();
+}
+
+// Geography helpers
+function addGeoStd(e) {
+  if (e.key !== 'Enter' || !e.target.value.trim()) return;
+  e.preventDefault();
+  const box = document.getElementById('geoStdsBox');
+  const tag = document.createElement('span'); tag.className = 'tag';
+  const val = e.target.value.trim();
+  tag.textContent = val;
+  const rm = document.createElement('button'); rm.className = 'tx'; rm.textContent = '✕';
+  rm.onclick = () => tag.remove();
+  tag.appendChild(rm);
+  box.insertBefore(tag, e.target);
+  e.target.value = '';
+  if (R) { if (!R.geography) R.geography={}; if (!R.geography.sizeStandards) R.geography.sizeStandards=[]; R.geography.sizeStandards.push(val); }
+}
+function showCoords() {
+  const lat = document.getElementById('geoLat').value;
+  const lng = document.getElementById('geoLng').value;
+  if (lat && lng) {
+    document.getElementById('coordDisplay').textContent = lat + '°, ' + lng + '°';
+    showToast('Coordinates set: ' + lat + ', ' + lng);
+  } else {
+    showToast('Enter latitude and longitude first.');
+  }
+}
+function updateGeoSidebar() {
+  const el = document.getElementById('geoCountry');
+  if (!el) return;
+  const c = el.value;
+  document.getElementById('sbGeo').textContent = (FLAGS[c]||'🌍') + ' ' + c;
+  // auto-set date format, units, currency, locale based on country
+  const fmtMap = {US:'MM/DD/YYYY', AU:'DD/MM/YYYY', UK:'DD/MM/YYYY', NZ:'DD/MM/YYYY', CA:'MM/DD/YYYY', SG:'DD/MM/YYYY'};
+  const unitMap = {US:'Imperial (in, lb)', AU:'Metric (cm, kg)', UK:'Metric (cm, kg)', NZ:'Metric (cm, kg)', CA:'Metric (cm, kg)', SG:'Metric (cm, kg)'};
+  const currMap = {US:'USD ($)', AU:'AUD (A$)', UK:'GBP (£)', NZ:'NZD (NZ$)', CA:'CAD (C$)', SG:'USD ($)'};
+  const locMap  = {US:'en-US', AU:'en-AU', UK:'en-GB', NZ:'en-NZ', CA:'en-CA', SG:'en-SG'};
+  setSel('geoDateFmt', fmtMap[c]||'MM/DD/YYYY');
+  setSel('geoUnits',   unitMap[c]||'Metric (cm, kg)');
+  setSel('geoCurrency',currMap[c]||'USD ($)');
+  setSel('geoLocale',  locMap[c]||'en-US');
+}
+
+// ══════════════════════════════════════════════════════
+//  CONFIGURATION
+// ══════════════════════════════════════════════════════
+let activeKey = 'bridal';
+let R = null;
+
+function updateCfgStatus(state) {
+  const dot = document.getElementById('cfgStatusDot');
+  const lbl = document.getElementById('cfgStatusLabel');
+  if (dot) dot.style.background = state==='saved' ? 'var(--green)' : 'var(--amber)';
+  if (lbl) lbl.textContent = state==='saved' ? 'Saved' : 'Unsaved changes';
+}
+
+function switchMain(name, el) {
+  document.querySelectorAll('.main-panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('panel-'+name).classList.add('active');
+  document.querySelectorAll('.sn-item').forEach(i => i.classList.remove('active'));
+  if (el) el.classList.add('active');
+  if (name==='preview') refreshJson();
+}
+
+function loadConfig(key) {
+  activeKey = key;
+  R = JSON.parse(JSON.stringify(CONFIGS[key]));
+  const sb = id => document.getElementById(id);
+  if (sb('sbId')) sb('sbId').textContent = '#'+R.id;
+  if (sb('sbType')) sb('sbType').textContent = R.type;
+  if (sb('sbClient')) sb('sbClient').textContent = R.client;
+  const g = R.geography||{};
+  if (sb('sbGeo')) sb('sbGeo').textContent = (FLAGS[R.country]||'🌍')+' '+(g.state||R.country);
+  if (sb('sbVer')) sb('sbVer').textContent = 'v'+R.version;
+  const sbSt = sb('sbStatus');
+  if (sbSt) { sbSt.textContent=R.status; sbSt.className=R.status==='Active'?'ba':'bd'; }
+
+  const sv = (id,val) => { const e=document.getElementById(id); if(e)e.value=val||''; };
+  sv('configTitle',R.name); sv('configDesc',R.desc); sv('configTemplate',R.template);
+  sv('configVersion',R.version); sv('numApproversRequired',R.numApproversRequired);
+  if(document.getElementById('approverCountDisplay')) document.getElementById('approverCountDisplay').textContent=R.numApproversRequired;
+  setSel('configClient',R.client); setSel('configType',R.type);
+  setSel('configOutput',R.output); setSel('configStyle',R.style);
+
+  // Region & Locale (now in Report Configuration panel)
+  const geoCountryEl = document.getElementById('geoCountry');
+  if (geoCountryEl && g.country) setSel('geoCountry', g.country);
+  const geoStateEl = document.getElementById('geoState');
+  if (geoStateEl && g.state) setSel('geoState', g.state);
+  const geoDateEl = document.getElementById('geoDateFmt');
+  if (geoDateEl) {
+    const fmtMap = {US:'MM/DD/YYYY', AU:'DD/MM/YYYY', UK:'DD/MM/YYYY', NZ:'DD/MM/YYYY', CA:'MM/DD/YYYY', SG:'DD/MM/YYYY'};
+    setSel('geoDateFmt', fmtMap[g.country||R.country] || 'MM/DD/YYYY');
+  }
+  const unitMap = {US:'Imperial (in, lb)', AU:'Metric (cm, kg)', UK:'Metric (cm, kg)', NZ:'Metric (cm, kg)', CA:'Metric (cm, kg)', SG:'Metric (cm, kg)'};
+  setSel('geoUnits', unitMap[g.country||R.country] || 'Imperial (in, lb)');
+  const currMap = {US:'USD ($)', AU:'AUD (A$)', UK:'GBP (£)', NZ:'NZD (NZ$)', CA:'CAD (C$)', SG:'USD ($)'};
+  setSel('geoCurrency', currMap[g.country||R.country] || 'USD ($)');
+  const localeMap = {US:'en-US', AU:'en-AU', UK:'en-GB', NZ:'en-NZ', CA:'en-CA', SG:'en-SG'};
+  setSel('geoLocale', localeMap[g.country||R.country] || 'en-US');
+  updateGeoSidebar();
+
+  renderGlobalApprovers(); renderVarList(); renderSections(); updateCounts();
+  updateCfgStatus('unsaved');
+}
+
+function setSel(id, val) {
+  const e = document.getElementById(id); if (!e) return;
+  for (let i=0;i<e.options.length;i++) { if (e.options[i].text===val||e.options[i].value===val){e.selectedIndex=i;return;} }
+}
+
+function updateCounts() {
+  const sv = (id,v) => { const e=document.getElementById(id); if(e) e.textContent=v; };
+  sv('navVarBadge',R.variables.length); sv('navSecBadge',R.sections.length);
+  sv('statVars',R.variables.length); sv('statSecs',R.sections.length);
+  sv('statCond',R.sections.filter(s=>s.condition).length);
+}
+
+// ── GLOBAL APPROVERS ──
+function renderGlobalApprovers() {
+  const c = document.getElementById('globalApproverList'); if (!c) return;
+  c.innerHTML = '';
+  (R.globalApprovers||[]).forEach((a,i) => c.appendChild(buildApproverRow(a,i,'global')));
+}
+function addGlobalApprover() {
+  if (!R.globalApprovers) R.globalApprovers=[];
+  R.globalApprovers.push({role:'HeadDesigner',sla:48,order:R.globalApprovers.length+1,required:true});
+  renderGlobalApprovers(); updateCfgStatus('unsaved');
+}
+function buildApproverRow(a,i,scope) {
+  const roles=['HeadDesigner','ProductionManager','QualityController','CreativeDirector','BuyingDirector'];
+  const row=mk('div','approver-item');
+  row.appendChild(fld('Reviewer Role',false,mkSel(roles,a.role,v=>{a.role=v;updateCfgStatus('unsaved');})));
+  row.appendChild(fld('SLA (hours)',false,mkIn('number',a.sla,v=>{a.sla=+v;updateCfgStatus('unsaved');})));
+  row.appendChild(fld('Order',false,mkIn('number',a.order||i+1,v=>{a.order=+v;updateCfgStatus('unsaved');})));
+  const rw=mk('div','field'); rw.appendChild(mk('label','','Required'));
+  const t=mkTog(a.required,v=>{a.required=v;updateCfgStatus('unsaved');}); t.style.marginTop='9px'; rw.appendChild(t); row.appendChild(rw);
+  const bw=mk('div'); bw.style.marginTop='18px';
+  bw.appendChild(mkBtn('btn btn-ghost btn-sm','✕ Remove',()=>{ if(scope==='global'){R.globalApprovers.splice(i,1);renderGlobalApprovers();} updateCfgStatus('unsaved'); }));
+  row.appendChild(bw); return row;
+}
+
+// ── VARIABLES ──
+function renderVarList() {
+  const c=document.getElementById('varList'); if(!c) return; c.innerHTML='';
+  if(!R.variables.length){c.innerHTML='<div class="empty-st"><div class="ei">🔤</div><p>No variables yet.</p></div>'; c.appendChild(mkBtn('add-row','＋ Add Variable',()=>openModal('modalAddVar'))); return;}
+  R.variables.slice().sort((a,b)=>a.sort-b.sort).forEach(v=>c.appendChild(buildVarCard(v)));
+  const ab=mkBtn('add-row','＋ Add Variable',()=>openModal('modalAddVar')); ab.style.marginTop='8px'; c.appendChild(ab);
+}
+function buildVarCard(v) {
+  const tC={'FreeText':'#e0e7ff|#3730a3','Selection':'#fce7f3|#9d174d','MultiSelection':'#fff7ed|#9a3412','Date':'#dcfce7|#166534','DateRange':'#d1fae5|#065f46','Boolean':'#fef3c7|#92400e','Number':'#dbeafe|#1e40af','Collection':'#f3e8ff|#6b21a8','DatabaseLookup':'#fce7f3|#9d174d'};
+  const [bg,col]=(tC[v.type]||'#f3f4f6|#374151').split('|');
+  const card=mk('div','var-item'); card.id='varc-'+v.id;
+  const head=mk('div','var-head'); head.addEventListener('click',()=>card.classList.toggle('open'));
+  const drag=mk('span','','⠿'); drag.style.cssText='color:#cbd5e1;cursor:grab;font-size:.9rem;';
+  const tok=mk('span','var-token','{'+v.name+'}');
+  const lbl=mk('span','var-lbl',v.label);
+  const tc=mk('span','type-chip'); tc.style.cssText='background:'+bg+';color:'+col+';padding:2px 7px;border-radius:20px;font-size:.66rem;font-weight:700;text-transform:uppercase;flex-shrink:0;'; tc.textContent=v.type;
+  head.appendChild(drag);head.appendChild(tok);head.appendChild(lbl);head.appendChild(tc);
+  if(v.required){head.appendChild(mk('span','chip chip-req','Required'));}
+  const acts=mk('div'); acts.style.cssText='display:flex;gap:4px;margin-left:8px;';
+  acts.appendChild(mkBtn('btn btn-ghost btn-sm','✎ Edit',e=>{e.stopPropagation();card.classList.add('open');}));
+  acts.appendChild(mkBtn('btn btn-danger btn-sm','✕',e=>{e.stopPropagation();R.variables=R.variables.filter(x=>x.id!==v.id);renderVarList();updateCounts();updateCfgStatus('unsaved');showToast('Variable removed.');}));
+  head.appendChild(acts); card.appendChild(head);
+  const body=mk('div','var-body'); body.appendChild(buildVarBodyEl(v)); card.appendChild(body);
+  return card;
+}
+function buildVarBodyEl(v) {
+  const w=mk('div'); const g=mk('div','fg fg-2');
+  g.appendChild(fld('Variable Name',true,mkIn('text',v.name,nv=>{v.name=nv;updateCfgStatus('unsaved');},'mono')));
+  g.appendChild(fld('Display Label',true,mkIn('text',v.label,nv=>{v.label=nv;updateCfgStatus('unsaved');})));
+  g.appendChild(fld('Type',true,mkSel(['FreeText','Selection','MultiSelection','Date','DateRange','Boolean','Number','Collection'],v.type,nv=>{v.type=nv;updateCfgStatus('unsaved');renderVarList();})));
+  g.appendChild(fld('Sort Order',true,mkIn('number',v.sort,nv=>{v.sort=+nv;updateCfgStatus('unsaved');})));
+  const hf=fld('Help Text',false,mkIn('text',v.help||'',nv=>{v.help=nv;updateCfgStatus('unsaved');})); hf.className='field full'; g.appendChild(hf);
+  w.appendChild(g);
+  const tr=mk('div','toggle-row'); const ti=mk('div','toggle-info'); ti.appendChild(mk('div','tl','Required')); ti.appendChild(mk('div','ts','Must be filled before generation')); tr.appendChild(ti); tr.appendChild(mkTog(v.required,nv=>{v.required=nv;updateCfgStatus('unsaved');})); w.appendChild(tr);
+  if(v.type==='Selection'||v.type==='MultiSelection'){
+    w.appendChild(mkHr());
+    const oh=mk('div'); oh.style.cssText='display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;'; oh.appendChild(mk('strong','','Options'));
+    oh.appendChild(mkBtn('btn btn-outline btn-sm','+ Add Option',()=>{const val=prompt('Option value:');if(!val)return;if(!v.options)v.options=[];v.options.push(val.trim());renderVarList();updateCfgStatus('unsaved');}));
+    w.appendChild(oh);
+    const ow=mk('div','opts-wrap'); ow.id='opts-'+v.id;
+    (v.options||[]).forEach(o=>{const tag=mk('span','opt-tag',o);const rm=mkBtn('otx','✕',()=>{v.options=v.options.filter(x=>x!==o);renderVarList();updateCfgStatus('unsaved');});tag.appendChild(rm);ow.appendChild(tag);});
+    w.appendChild(ow);
+  }
+  if(v.type==='DatabaseLookup'){
+    const lc=v.lookupConfig||{}; w.appendChild(mkHr()); w.appendChild(mk('strong','','Database Lookup Config'));
+    const lg=mk('div','fg fg-2'); lg.style.marginTop='8px';
+    lg.appendChild(fld('Stored Procedure',false,mkIn('text',lc.proc||'',nv=>{if(!v.lookupConfig)v.lookupConfig={};v.lookupConfig.proc=nv;updateCfgStatus('unsaved');},'mono')));
+    lg.appendChild(fld('Filter By',false,mkIn('text',lc.filterBy||'',nv=>{if(!v.lookupConfig)v.lookupConfig={};v.lookupConfig.filterBy=nv;updateCfgStatus('unsaved');},'mono')));
+    lg.appendChild(fld('Display Field',true,mkIn('text',lc.displayField||'',nv=>{if(!v.lookupConfig)v.lookupConfig={};v.lookupConfig.displayField=nv;updateCfgStatus('unsaved');},'mono')));
+    lg.appendChild(fld('Value Field',true,mkIn('text',lc.valueField||'',nv=>{if(!v.lookupConfig)v.lookupConfig={};v.lookupConfig.valueField=nv;updateCfgStatus('unsaved');},'mono')));
+    w.appendChild(lg);
+  }
+  return w;
+}
+function confirmAddVar() {
+  const name=document.getElementById('mv_name').value.trim(), label=document.getElementById('mv_label').value.trim(), type=document.getElementById('mv_type').value;
+  if(!name||!label){showToast('⚠️ Name and label required.');return;}
+  const v={id:'v'+Date.now(),name,label,type,sort:+document.getElementById('mv_sort').value,required:document.getElementById('mv_req').checked,help:document.getElementById('mv_help').value};
+  if(type==='Selection'||type==='MultiSelection')v.options=[];
+  if(type==='DatabaseLookup')v.lookupConfig={proc:'',filterBy:'',displayField:'',valueField:'',multiSelect:false};
+  R.variables.push(v); renderVarList(); updateCounts(); updateCfgStatus('unsaved');
+  closeModal('modalAddVar'); showToast('Variable {'+name+'} added.');
+  ['mv_name','mv_label','mv_help'].forEach(id=>document.getElementById(id).value='');
+}
+
+// ── SECTIONS ──
+function renderSections() {
+  const c=document.getElementById('sectionTree'); if(!c) return; c.innerHTML='';
+  if(!R.sections.length){c.innerHTML='<div class="empty-st"><div class="ei">📑</div><p>No sections yet.</p></div>';}
+  else{const top=R.sections.filter(s=>!s.parent); top.forEach(s=>{c.appendChild(buildSecCard(s,false));R.sections.filter(ch=>ch.parent===s.id).forEach(ch=>c.appendChild(buildSecCard(ch,true)));});}
+  const ab=mkBtn('add-row','＋ Add Top-Level Section',()=>openAddSectionModal(null)); ab.style.marginTop='8px'; c.appendChild(ab);
+}
+function buildSecCard(s,isChild) {
+  const card=mk('div','sec-card'+(isChild?' child':''));card.id='secc-'+s.id;
+  const tnc=({ExecutiveSummary:'es',References:'ref',Appendix:'app'})[s.type]||'content';
+  const tcc=({ExecutiveSummary:'chip-exec',References:'chip-ref',Appendix:'chip-app',Content:'chip-content'})[s.type]||'chip-content';
+  const head=mk('div','sec-card-head');
+  head.addEventListener('click',e=>{if(!e.target.closest('button'))card.classList.toggle('open');});
+  const nb=mk('span','sec-num-badge '+tnc,s.num||'?');
+  const tb=mk('div','sec-title-block');
+  const st=mk('div','sec-title',s.title);
+  tb.appendChild(st); tb.appendChild(mk('div','sec-subtitle',(isChild?'Sub-section':'Top-level')+' · Seq '+s.seq));
+  const chips=mk('div','sec-chips');
+  chips.appendChild(mk('span','chip '+tcc,s.type));
+  chips.appendChild(mk('span','chip chip-'+(s.shape||'text').toLowerCase(),s.shape));
+  chips.appendChild(mk('span',s.generatable?'chip chip-gen':'chip chip-static',s.generatable?'AI':'Static'));
+  if(s.condition)chips.appendChild(mk('span','chip chip-cond','⚡ Conditional'));
+  const acts=mk('div','sec-actions');
+  acts.appendChild(mkBtn('btn btn-ghost btn-sm','+ Child',e=>{e.stopPropagation();openAddSectionModal(s.id);}));
+  acts.appendChild(mkBtn('btn btn-danger btn-sm','✕',e=>{e.stopPropagation();if(confirm('Remove section?')){R.sections=R.sections.filter(x=>x.id!==s.id&&x.parent!==s.id);renderSections();updateCounts();updateCfgStatus('unsaved');showToast('Section removed.');}}));
+  const exp=mk('button','sec-expand-btn','▾'); exp.type='button'; acts.appendChild(exp);
+  head.appendChild(mk('span','drag-handle','⠿'));head.appendChild(nb);head.appendChild(tb);head.appendChild(chips);head.appendChild(acts);
+  card.appendChild(head);
+  const body=mk('div','sec-body');
+  const tabBar=mk('div','inner-tabs');
+  const panels={};
+  [['struct','Structure'],['content','Content'],['style','Style & Tone'],['sources','Sources ('+(s.sources?.length||0)+')'],['sample','Sample'],['approval','Approval ('+(s.approvers?.length||0)+')'],['qa','QA Config']].forEach(([nm,lbl],idx)=>{
+    const btn=mk('button','inner-tab'+(idx===0?' active':''),lbl); btn.type='button';
+    btn.addEventListener('click',()=>{tabBar.querySelectorAll('.inner-tab').forEach(b=>b.classList.remove('active'));btn.classList.add('active');Object.values(panels).forEach(p=>p.classList.remove('active'));panels[nm].classList.add('active');});
+    tabBar.appendChild(btn);
+    const panel=mk('div','inner-panel'+(idx===0?' active':'')); panel.id='secc-'+s.id+'-'+nm; panels[nm]=panel;
+  });
+  body.appendChild(tabBar);
+  panels.struct.appendChild(buildSecStructEl(s,nb,st));
+  panels.content.appendChild(buildSecContentEl(s));
+  panels.style.appendChild(buildSecStyleEl(s));
+  panels.sources.appendChild(buildSecSourcesEl(s,tabBar));
+  panels.sample.appendChild(buildSecSampleEl(s));
+  panels.approval.appendChild(buildSecApprovalEl(s,tabBar));
+  panels.qa.appendChild(buildSecQaEl(s));
+  Object.values(panels).forEach(p=>body.appendChild(p));
+  card.appendChild(body); return card;
+}
+function buildSecStructEl(s,numBadge,titleEl) {
+  const w=mk('div');
+  const g=mk('div','fg fg-2');
+  const ni=mkIn('text',s.num||'',v=>{s.num=v;numBadge.textContent=v||'?';updateCfgStatus('unsaved');}); ni.placeholder='e.g. 1, 1.2, ES';
+  const ti=mkIn('text',s.title,v=>{s.title=v;titleEl.textContent=v;updateCfgStatus('unsaved');});
+  const ts=mkSel(['ExecutiveSummary','Content','References','Appendix'],s.type,v=>{s.type=v;updateCfgStatus('unsaved');renderSections();});
+  const ss=mkSel(['Narrative','DataTable','Figure','Appendix','Mixed'],s.shape,v=>{s.shape=v;updateCfgStatus('unsaved');});
+  const sq=mkIn('number',s.seq,v=>{s.seq=+v;updateCfgStatus('unsaved');});
+  const pSel=document.createElement('select');
+  [['','None (top-level)']].concat(R.sections.filter(x=>x.id!==s.id&&!x.parent).map(x=>[x.id,(x.num||'?')+' — '+x.title])).forEach(([v,l])=>{const o=document.createElement('option');o.value=v;o.textContent=l;if(v===s.parent)o.selected=true;pSel.appendChild(o);});
+  pSel.addEventListener('change',e=>{s.parent=e.target.value;updateCfgStatus('unsaved');});
+  g.appendChild(fld('Section Number',false,ni));g.appendChild(fld('Title',true,ti));g.appendChild(fld('Type',true,ts));g.appendChild(fld('Shape',true,ss));g.appendChild(fld('Sequence',true,sq));g.appendChild(fld('Parent',false,pSel));
+  w.appendChild(g);
+  const gtr=mk('div','toggle-row');const gti=mk('div','toggle-info');gti.appendChild(mk('div','tl','AI Generatable'));gti.appendChild(mk('div','ts','AI writes this section'));gtr.appendChild(gti);gtr.appendChild(mkTog(s.generatable,v=>{s.generatable=v;updateCfgStatus('unsaved');}));w.appendChild(gtr);
+  const rtr=mk('div','toggle-row');const rti=mk('div','toggle-info');rti.appendChild(mk('div','tl','Required'));rti.appendChild(mk('div','ts','Always included'));rtr.appendChild(rti);rtr.appendChild(mkTog(s.required,v=>{s.required=v;updateCfgStatus('unsaved');}));w.appendChild(rtr);
+  w.appendChild(mkHr());
+  const cl=mk('strong','','Conditional Inclusion'); cl.style.cssText='font-size:.77rem;color:#64748b;display:block;margin-bottom:9px;text-transform:uppercase;letter-spacing:.04em;'; w.appendChild(cl);
+  const cw=mk('div'); cw.id='condwrap-'+s.id; renderCondBlock(s,cw); w.appendChild(cw);
+  return w;
+}
+function renderCondBlock(s,c) {
+  c.innerHTML='';
+  if(s.condition){
+    const b=mk('div','cond-badge'); b.innerHTML='⚡ <strong>Conditional</strong> — Only shown when condition is true.'; c.appendChild(b);
+    const g=mk('div','fg fg-2'); g.style.marginBottom='8px';
+    const vn=R.variables.map(v=>v.name);
+    const vs=mkSel(vn.length?vn:['(no variables)'],s.condition.variable,v=>{s.condition.variable=v;updateCfgStatus('unsaved');});
+    const os=mkSel(['equals','notEquals','in','notIn','isNotNull','isEmpty'],s.condition.operator,v=>{s.condition.operator=v;updateCfgStatus('unsaved');});
+    const vi=mkIn('text',s.condition.value||'',v=>{s.condition.value=v;updateCfgStatus('unsaved');}); vi.placeholder='Expected value';
+    const vif=fld('Variable',true,vs); const vof=fld('Operator',true,os); const vvf=fld('Value',false,vi); vvf.className='field full';
+    g.appendChild(vif);g.appendChild(vof);g.appendChild(vvf); c.appendChild(g);
+    c.appendChild(mkBtn('btn btn-danger btn-sm','✕ Remove Condition',()=>{s.condition=null;renderCondBlock(s,c);updateCfgStatus('unsaved');}));
+  } else {
+    c.appendChild(mkBtn('btn btn-ghost btn-sm','+ Add Conditional Rule',()=>{s.condition={variable:R.variables[0]?.name||'',operator:'equals',value:''};renderCondBlock(s,c);updateCfgStatus('unsaved');}));
+  }
+}
+function buildSecContentEl(s) {
+  const w=mk('div');
+  const tf=fld('Writing Instructions',false,mkTa(s.instructions,5,v=>{s.instructions=v;updateCfgStatus('unsaved');})); tf.style.marginBottom='10px'; w.appendChild(tf);
+  w.appendChild(fld('Static Content (if not generatable)',false,mkTa(s.staticContent||'',3,v=>{s.staticContent=v;updateCfgStatus('unsaved');})));
+  return w;
+}
+function buildSecStyleEl(s) {
+  if(!s.styleTone)s.styleTone={};const st=s.styleTone;const w=mk('div');
+  const g=mk('div','fg fg-3');
+  g.appendChild(fld('Voice',false,mkSel(['Technical','Formal','Descriptive','Concise'],st.voice||'Technical',v=>{st.voice=v;updateCfgStatus('unsaved');})));
+  g.appendChild(fld('Tense',false,mkSel(['Past','Present','Mixed'],st.tense||'Mixed',v=>{st.tense=v;updateCfgStatus('unsaved');})));
+  g.appendChild(fld('Formality',false,mkSel(['High','Standard','Moderate'],st.formality||'Standard',v=>{st.formality=v;updateCfgStatus('unsaved');})));
+  g.appendChild(fld('Person',false,mkSel(['ThirdPerson','FirstPersonPlural'],st.person||'ThirdPerson',v=>{st.person=v;updateCfgStatus('unsaved');})));
+  const mp=mkIn('number',st.maxParagraphs||'',v=>{st.maxParagraphs=+v;updateCfgStatus('unsaved');}); mp.placeholder='Soft limit';
+  g.appendChild(fld('Max Paragraphs',false,mp));
+  g.appendChild(fld('Citation Style',false,mkSel(['Inline','Footnote','None'],st.citationStyle||'Inline',v=>{st.citationStyle=v;updateCfgStatus('unsaved');})));
+  w.appendChild(g);
+  const af=fld('Avoid List',false,buildTagBox(st,'avoidList')); af.style.marginTop='10px'; w.appendChild(af);
+
+  // Preferred Terminology table
+  w.appendChild(mkHr());
+  const termHdr=mk('div'); termHdr.style.cssText='display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;';
+  const termLbl=mk('strong','','Preferred Terminology');
+  termLbl.style.cssText='font-size:.8rem;color:var(--text);';
+  const termHint=mk('span','','Key-value map of terms the writer agent substitutes when generating content.');
+  termHint.style.cssText='font-size:.72rem;color:var(--muted);';
+  termHdr.appendChild(termLbl);
+  w.appendChild(termHdr); w.appendChild(termHint);
+  const termTable=mk('table','term-table'); termTable.style.marginTop='8px';
+  const thead=mk('thead'); thead.innerHTML='<tr><th style="width:40%">Replace (original term)</th><th style="width:40%">With (preferred term)</th><th style="width:20%">Example</th><th></th></tr>';
+  const tbody=mk('tbody');
+  termTable.id='terms-'+s.id;
+  const terms=st.preferredTerminology||{};
+  Object.entries(terms).forEach(([k,v2])=>{ tbody.appendChild(buildTermRow2(st,k,v2,s.id)); });
+  termTable.appendChild(thead); termTable.appendChild(tbody);
+  w.appendChild(termTable);
+  w.appendChild(mkBtn('btn btn-ghost btn-sm','+ Add Term',()=>{
+    if(!st.preferredTerminology)st.preferredTerminology={};
+    tbody.appendChild(buildTermRow2(st,'','',s.id));
+    updateCfgStatus('unsaved');
+  }));
+  const termEx=mk('div'); termEx.style.cssText='margin-top:8px;padding:8px 10px;background:#f8fafc;border:1px solid var(--border);border-radius:6px;font-size:.72rem;color:var(--muted);';
+  termEx.innerHTML='<strong>Examples:</strong> cheap → accessibly priced &nbsp;·&nbsp; baggy → relaxed &nbsp;·&nbsp; tight → fitted &nbsp;·&nbsp; we believe → (avoid)';
+  w.appendChild(termEx);
+  return w;
+}
+
+function buildTermRow2(st, k, v2, secId) {
+  const row=document.createElement('tr');
+  const exMap={'cheap':'accessibly priced','baggy':'relaxed','tight':'fitted','colour':'colourway'};
+  const kIn=mkIn('text',k,nk=>{
+    if(st.preferredTerminology&&st.preferredTerminology[k]!==undefined){
+      const val=st.preferredTerminology[k]; delete st.preferredTerminology[k]; st.preferredTerminology[nk]=val;
+    } updateCfgStatus('unsaved');
+  }); kIn.placeholder='e.g. cheap';
+  const vIn=mkIn('text',v2,nv=>{
+    if(!st.preferredTerminology)st.preferredTerminology={};
+    st.preferredTerminology[kIn.value]=nv; updateCfgStatus('unsaved');
+  }); vIn.placeholder='e.g. impact';
+  const exEl=mk('td'); exEl.style.cssText='font-size:.72rem;color:var(--muted);font-style:italic;padding:5px 8px;';
+  exEl.textContent=Object.values(exMap)[Math.floor(Math.random()*4)]||'';
+  const td1=document.createElement('td'); td1.appendChild(kIn);
+  const td2=document.createElement('td'); td2.appendChild(vIn);
+  const td3=document.createElement('td');
+  const rm=mkBtn('','✕',()=>{if(st.preferredTerminology)delete st.preferredTerminology[kIn.value];row.remove();updateCfgStatus('unsaved');});
+  rm.style.cssText='background:none;border:none;cursor:pointer;color:var(--red);font-size:.85rem;padding:2px 6px;';
+  td3.appendChild(rm);
+  row.appendChild(td1); row.appendChild(td2); row.appendChild(exEl); row.appendChild(td3);
+  return row;
+}
+function buildTagBox(st,prop) {
+  const box=mk('div','tag-box');
+  const render=()=>{
+    box.innerHTML='';
+    (st[prop]||[]).forEach(t=>{const tag=mk('span','tag',t);tag.appendChild(mkBtn('tx','✕',()=>{st[prop]=st[prop].filter(x=>x!==t);render();updateCfgStatus('unsaved');}));box.appendChild(tag);});
+    const inp=mkIn('text','',()=>{}); inp.placeholder='Add + Enter';
+    inp.addEventListener('keydown',e=>{if(e.key==='Enter'&&inp.value.trim()){if(!st[prop])st[prop]=[];st[prop].push(inp.value.trim());render();updateCfgStatus('unsaved');}});
+    box.appendChild(inp);
+  };render();return box;
+}
+function buildSecSourcesEl(s,tabBar) {
+  const w=mk('div'); const list=mk('div'); list.id='srclist-'+s.id;
+  const refresh=()=>{
+    list.innerHTML='';
+    if(!s.sources||!s.sources.length){list.innerHTML='<div class="empty-st" style="padding:20px;"><div class="ei">🔍</div><p>No sources yet.</p></div>';}
+    else s.sources.forEach(src=>list.appendChild(buildSrcItem(s,src,refresh,tabBar)));
+    tabBar.querySelectorAll('.inner-tab').forEach(t=>{if(t.textContent.startsWith('Sources'))t.textContent='Sources ('+(s.sources?.length||0)+')';});
+  };refresh();
+  w.appendChild(list);
+  w.appendChild(mkBtn('add-row','＋ Add Data Source',()=>{if(!s.sources)s.sources=[];s.sources.push({id:'src'+Date.now(),priority:s.sources.length+1,index:'prior-reports',query:'',mode:'Semantic',topK:5,minScore:0.70,filter:'',fallback:'GenerateWithoutContext'});refresh();updateCfgStatus('unsaved');}));
+  return w;
+}
+function buildSrcItem(s,src,refresh,tabBar) {
+  const item=mk('div','source-item'); item.id='si-'+src.id;
+  const head=mk('div','source-head'); head.addEventListener('click',e=>{if(!e.target.closest('button'))item.classList.toggle('open');});
+  head.appendChild(mk('span','source-num',String(src.priority)));
+  head.appendChild(mk('span','source-index',src.index));
+  const qEl=mk('span','source-query',src.query||'(no query)'); head.appendChild(qEl);
+  head.appendChild(mkBtn('btn btn-danger btn-sm','✕ Remove',e=>{e.stopPropagation();s.sources=s.sources.filter(x=>x.id!==src.id);item.remove();if(!s.sources.length)refresh();tabBar.querySelectorAll('.inner-tab').forEach(t=>{if(t.textContent.startsWith('Sources'))t.textContent='Sources ('+(s.sources?.length||0)+')';});updateCfgStatus('unsaved');}));
+  const body=mk('div','source-body');
+  const g=mk('div','fg fg-2');
+  g.appendChild(fld('Index / Source',true,mkSel(['prior-reports','sales-data','brand-guidelines'],src.index,v=>{src.index=v;updateCfgStatus('unsaved');})));
+  g.appendChild(fld('Query Mode',false,mkSel(['Semantic','Keyword','Hybrid','MetadataOnly'],src.mode,v=>{src.mode=v;updateCfgStatus('unsaved');})));
+  const qi=mkIn('text',src.query,v=>{src.query=v;qEl.textContent=v||'(no query)';updateCfgStatus('unsaved');},'mono'); qi.placeholder='e.g. sell-through {collection_name}';
+  const qf=fld('Query Text',true,qi); qf.className='field full'; g.appendChild(qf);
+  g.appendChild(fld('Top K',false,mkIn('number',src.topK,v=>{src.topK=+v;updateCfgStatus('unsaved');})));
+  const scoreIn=mkIn('number',src.minScore,v=>{src.minScore=+v;updateCfgStatus('unsaved');}); scoreIn.step='0.05'; scoreIn.min='0'; scoreIn.max='1'; scoreIn.placeholder='0.0–1.0';
+  g.appendChild(fld('Min Relevance Score',false,scoreIn,'Semantic: 0.7 · Data: 0.5'));
+  const ccSel=mkSel(['','Narrative','Table','Image','RawDocument'],src.contentClass||'',v=>{src.contentClass=v;updateCfgStatus('unsaved');}); ccSel.options[0].textContent='Any';
+  g.appendChild(fld('Content Class Filter',false,ccSel));
+  g.appendChild(fld('Fallback Behavior',true,mkSel(['Warn','Skip','UseDefault','Escalate'],src.fallback||'Warn',v=>{src.fallback=v;updateCfgStatus('unsaved');})));
+  const reqRow=mk('div','toggle-row'); const reqTi=mk('div','toggle-info'); reqTi.appendChild(mk('div','tl','Source Required')); reqTi.appendChild(mk('div','ts','Section fails if this source returns no results')); reqRow.appendChild(reqTi); reqRow.appendChild(mkTog(src.isRequired||false,v=>{src.isRequired=v;updateCfgStatus('unsaved');}));
+  g.appendChild(reqRow);
+  body.appendChild(g); item.appendChild(head); item.appendChild(body); return item;
+}
+function buildSecSampleEl(s){const w=mk('div');w.appendChild(fld('Source File',false,mkIn('text',s.sampleSource||'',v=>{s.sampleSource=v;updateCfgStatus('unsaved');})));w.appendChild(fld('Notes for the AI writer',false,mkIn('text',s.sampleNotes||'',v=>{s.sampleNotes=v;updateCfgStatus('unsaved');})));w.appendChild(fld('Sample HTML',false,mkTa(s.sampleHtml||'',4,v=>{s.sampleHtml=v;updateCfgStatus('unsaved');})));return w;}
+function buildSecApprovalEl(s,tabBar) {
+  if(!s.approvers)s.approvers=[];const w=mk('div');
+  const sum=mk('div','approval-summary'); sum.innerHTML='<span style="font-size:.9rem;">👥</span> Section has <strong id="secaprcount-'+s.id+'">'+s.approvers.length+'</strong> approver(s). Global minimum: <strong>'+R.numApproversRequired+'</strong>.'; w.appendChild(sum);
+  const list=mk('div'); list.id='secapr-'+s.id;
+  const refresh=()=>{
+    list.innerHTML='';const cc=document.getElementById('secaprcount-'+s.id);if(cc)cc.textContent=s.approvers.length;
+    if(!s.approvers.length){list.innerHTML='<p style="font-size:.78rem;color:var(--muted);padding:7px 0;">No section-level approvers — using global workflow.</p>';}
+    else s.approvers.forEach((a,i)=>{
+      const roles=['HeadDesigner','ProductionManager','QualityController','CreativeDirector','BuyingDirector'];
+      const row=mk('div','approver-item');
+      row.appendChild(fld('Role',false,mkSel(roles,a.role,v=>{a.role=v;updateCfgStatus('unsaved');})));
+      row.appendChild(fld('SLA (h)',false,mkIn('number',a.sla,v=>{a.sla=+v;updateCfgStatus('unsaved');})));
+      row.appendChild(fld('Order',false,mkIn('number',a.order||i+1,v=>{a.order=+v;updateCfgStatus('unsaved');})));
+      const rf=mk('div','field');rf.appendChild(mk('label','','Req'));const t=mkTog(a.required,v=>{a.required=v;updateCfgStatus('unsaved');});t.style.marginTop='9px';rf.appendChild(t);row.appendChild(rf);
+      const bw=mk('div');bw.style.marginTop='18px';bw.appendChild(mkBtn('btn btn-danger btn-sm','✕',()=>{s.approvers.splice(i,1);refresh();tabBar.querySelectorAll('.inner-tab').forEach(t=>{if(t.textContent.startsWith('Approval'))t.textContent='Approval ('+(s.approvers?.length||0)+')';});updateCfgStatus('unsaved');}));row.appendChild(bw);list.appendChild(row);
+    });
+    tabBar.querySelectorAll('.inner-tab').forEach(t=>{if(t.textContent.startsWith('Approval'))t.textContent='Approval ('+(s.approvers?.length||0)+')';});
+  };refresh();w.appendChild(list);
+  const ab=mkBtn('add-row green','＋ Add Approver',()=>{s.approvers.push({role:'HeadDesigner',sla:48,order:s.approvers.length+1,required:true});refresh();updateCfgStatus('unsaved');});ab.style.marginTop='8px';w.appendChild(ab);return w;
+}
+function openAddSectionModal(parentId) {
+  const sel=document.getElementById('ms_parent'); sel.innerHTML='<option value="">None (top-level)</option>';
+  R.sections.filter(s=>!s.parent).forEach(s=>{const o=document.createElement('option');o.value=s.id;o.textContent=(s.num||'?')+' — '+s.title;if(s.id===parentId)o.selected=true;sel.appendChild(o);});
+  openModal('modalAddSection');
+}
+function confirmAddSection() {
+  const title=document.getElementById('ms_title').value.trim();if(!title){showToast('⚠️ Title required.');return;}
+  const ns={id:'s'+Date.now(),num:document.getElementById('ms_num').value.trim(),title,type:document.getElementById('ms_type').value,shape:document.getElementById('ms_shape').value,seq:+document.getElementById('ms_seq').value,parent:document.getElementById('ms_parent').value,required:document.getElementById('ms_req').checked,generatable:document.getElementById('ms_gen').checked,instructions:'',sources:[],approvers:[],condition:null};
+  R.sections.push(ns);renderSections();updateCounts();updateCfgStatus('unsaved');closeModal('modalAddSection');showToast('Section "'+title+'" added.');
+  document.getElementById('ms_title').value='';document.getElementById('ms_num').value='';
+}
+
+// ── JSON PREVIEW ──
+function refreshJson() {
+  const r2=document.getElementById('configTitle');if(r2){R.name=r2.value;R.desc=document.getElementById('configDesc').value;R.template=document.getElementById('configTemplate').value;R.numApproversRequired=+(document.getElementById('numApproversRequired').value||1);}
+  // collect geography
+  const g2=id=>document.getElementById(id)?.value||'';
+  R.geography={country:g2('geoCountry'),state:g2('geoState'),dateFormat:g2('geoDateFmt'),unitSystem:g2('geoUnits'),currency:g2('geoCurrency'),locale:g2('geoLocale')};
+  R.country = g2('geoCountry')||R.country;
+  const scope=document.getElementById('jsonScopeSelect')?.value||'full';
+  let data;
+  if(scope==='metadata')data={configId:R.id,configName:R.name,version:R.version,description:R.desc,reportType:R.type,client:R.client,country:R.country,outputType:R.output,templateId:R.template,numApproversRequired:R.numApproversRequired,status:R.status};
+  else if(scope==='geography')data={geography:R.geography};
+  else if(scope==='variables')data={userInputVariables:R.variables};
+  else if(scope==='sections')data={sections:R.sections};
+  else data={configId:R.id,configName:R.name,version:R.version,status:R.status,description:R.desc,reportType:R.type,client:R.client,outputType:R.output,templateId:R.template,numApproversRequired:R.numApproversRequired,globalApprovers:R.globalApprovers||[],geography:R.geography,userInputVariables:R.variables,sections:R.sections};
+  const raw=JSON.stringify(data,null,2);
+  const out=document.getElementById('jsonOut');if(!out)return;
+  out.innerHTML=raw.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"([\w@.\- ]+)"(\s*):/g,'<span class="jk">"$1"</span>$2:').replace(/:\s*"([^"]*)"/g,(m,v)=>': <span class="js">"'+v+'"</span>').replace(/:\s*(-?\d+\.?\d*)/g,': <span class="jn">$1</span>').replace(/:\s*(true|false)/g,': <span class="jb">$1</span>').replace(/:\s*(null)/g,': <span class="jnl">null</span>');
+}
+function copyJson(){navigator.clipboard.writeText(document.getElementById('jsonOut').textContent).then(()=>showToast('JSON copied!'));}
+
+// ── SAVE ──
+function saveConfig() {
+  R.name=document.getElementById('configTitle').value;R.desc=document.getElementById('configDesc').value;R.template=document.getElementById('configTemplate').value;R.numApproversRequired=+document.getElementById('numApproversRequired').value;
+  CONFIGS[activeKey]=JSON.parse(JSON.stringify(R));
+  if (location.protocol !== 'file:') { apiFetch('/api/configs/'+encodeURIComponent(activeKey),{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(R)}).then(r=>{ if(!r.ok) r.json().then(e=>showToast('⚠️ Server rejected the configuration: '+((e.issues||[]).filter(i=>i.severity==='error').map(i=>i.message).join(' ')||'invalid'))); }).catch(()=>showToast('⚠️ Saved in this tab only; the server is unreachable.')); }
+  updateCfgStatus('saved');
+  document.getElementById('sbStatus').textContent='Active';document.getElementById('sbStatus').className='ba';
+  showToast('✅ Configuration saved.');
+}
+
+// ── NEW CONFIG ──
+function createNewConfig() {
+  const name=document.getElementById('nr_name').value.trim();if(!name){showToast('⚠️ Name required.');return;}
+  const nk='r'+Date.now(); const clone=document.getElementById('nr_clone').value;
+  CONFIGS[nk]=clone?JSON.parse(JSON.stringify({...CONFIGS[clone],id:'C-'+(Math.floor(Math.random()*9000)+1000),name,status:'Draft',version:1})):{id:'C-'+(Math.floor(Math.random()*9000)+1000),name,version:1,status:'Draft',type:document.getElementById('nr_type').value,client:document.getElementById('nr_client').value,country:'US',output:'docx',template:'',style:'Standard — Professional',desc:'',numApproversRequired:1,variables:[],sections:[],globalApprovers:[]};
+  const sel=document.getElementById('configSwitcher'); const opt=document.createElement('option'); opt.value=nk; opt.textContent=name; sel.appendChild(opt); sel.value=nk;
+  loadConfig(nk); closeModal('modalNewConfig'); showToast('Config "'+name+'" created.');
+  document.getElementById('nr_name').value='';
+}
+
+function buildSecQaEl(s) {
+  if(!s.qualityConfig)s.qualityConfig={minScore:90,maxRevisions:3,criticalIssueThreshold:0,qaInstructions:'',validationChecklist:[],scoringWeights:null};
+  const qc=s.qualityConfig; const w=mk('div');
+  // Header callout
+  const cl=mk('div','callout c-info'); cl.innerHTML='<span>🤖</span><div>Quality config controls how the QA agent scores and validates this section after generation. Weights must sum to 1.0.</div>'; w.appendChild(cl);
+  // Basic config grid
+  const g=mk('div','fg fg-3');
+  const msIn=mkIn('number',qc.minScore||90,v=>{qc.minScore=+v;updateCfgStatus('unsaved');}); msIn.min='0'; msIn.max='100';
+  const mrIn=mkIn('number',qc.maxRevisions||3,v=>{qc.maxRevisions=+v;updateCfgStatus('unsaved');}); mrIn.min='1'; mrIn.max='10';
+  const ciIn=mkIn('number',qc.criticalIssueThreshold||0,v=>{qc.criticalIssueThreshold=+v;updateCfgStatus('unsaved');}); ciIn.min='0';
+  g.appendChild(fld('Min Pass Score (0–100)',true,msIn,'Below this → NEEDS_REVIEW'));
+  g.appendChild(fld('Max Revisions',true,mrIn,'QA → rewrite cycles before escalation'));
+  g.appendChild(fld('Critical Issue Threshold',false,ciIn,'0 = any critical issue fails the section'));
+  w.appendChild(g);
+  // QA Instructions
+  w.appendChild(mkHr());
+  const qaLbl=mk('strong','','QA Instructions'); qaLbl.style.cssText='font-size:.8rem;display:block;margin-bottom:6px;';
+  w.appendChild(qaLbl);
+  const qaHint=mk('p','','Domain-specific guidance appended to the QA agent prompt. Reference specific size charts, fabrics, or style codes to check.'); qaHint.style.cssText='font-size:.72rem;color:var(--muted);margin-bottom:8px;';
+  w.appendChild(qaHint);
+  w.appendChild(fld('QA Instructions',false,mkTa(qc.qaInstructions||'',4,v=>{qc.qaInstructions=v;updateCfgStatus('unsaved');})));
+  // Validation Checklist
+  w.appendChild(mkHr());
+  const clHdr=mk('div'); clHdr.style.cssText='display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;';
+  const clLbl=mk('strong','','Validation Checklist'); clLbl.style.cssText='font-size:.8rem;';
+  const clHint=mk('span','','Each item evaluated PASS/FAIL · failed items = critical issue (−20 pts)'); clHint.style.cssText='font-size:.71rem;color:var(--muted);';
+  clHdr.appendChild(clLbl); w.appendChild(clHdr); w.appendChild(clHint);
+  const clList=mk('div'); clList.style.marginTop='8px';
+  const renderChecklist=()=>{
+    clList.innerHTML='';
+    (qc.validationChecklist||[]).forEach((item,i)=>{
+      const row=mk('div'); row.style.cssText='display:flex;gap:6px;align-items:center;margin-bottom:6px;';
+      const numEl=mk('span'); numEl.style.cssText='background:var(--navy);color:#fff;border-radius:4px;padding:1px 7px;font-size:.7rem;font-family:var(--mono);flex-shrink:0;'; numEl.textContent=String(i+1);
+      const inp=mkIn('text',item,v=>{qc.validationChecklist[i]=v;updateCfgStatus('unsaved');}); inp.placeholder="e.g. Every style in the collection is mentioned by style code";
+      const rm=mkBtn('','✕',()=>{qc.validationChecklist.splice(i,1);renderChecklist();updateCfgStatus('unsaved');}); rm.style.cssText='background:none;border:none;cursor:pointer;color:var(--red);flex-shrink:0;';
+      row.appendChild(numEl); row.appendChild(inp); row.appendChild(rm); clList.appendChild(row);
+    });
+  };
+  renderChecklist(); w.appendChild(clList);
+  const addClBtn=mkBtn('add-row','+ Add Checklist Item',()=>{if(!qc.validationChecklist)qc.validationChecklist=[];qc.validationChecklist.push('');renderChecklist();updateCfgStatus('unsaved');}); addClBtn.style.marginTop='8px'; w.appendChild(addClBtn);
+  // Scoring Weights
+  w.appendChild(mkHr());
+  const swLbl=mk('strong','','Scoring Weights'); swLbl.style.cssText='font-size:.8rem;display:block;margin-bottom:4px;'; w.appendChild(swLbl);
+  const swHint=mk('p','','Values 0.0–1.0 · must sum to 1.0 · leave blank for equal weights (0.2 each)'); swHint.style.cssText='font-size:.72rem;color:var(--muted);margin-bottom:10px;'; w.appendChild(swHint);
+  const sw=qc.scoringWeights||{accuracy:0.2,completeness:0.2,structure:0.2,clarity:0.2,compliance:0.2};
+  const swg=mk('div','fg fg-3');
+  const dims=[['accuracy','Accuracy','Data-heavy sections'],['completeness','Completeness','Design-story sections'],['structure','Structure','Mixed-content sections'],['clarity','Clarity','Executive summaries'],['compliance','Compliance','Brand & labelling sections']];
+  dims.forEach(([key,label,hint])=>{
+    const inp=mkIn('number',sw[key]||0.2,v=>{if(!qc.scoringWeights)qc.scoringWeights={};qc.scoringWeights[key]=+v;updateCfgStatus('unsaved');}); inp.step='0.05'; inp.min='0'; inp.max='1';
+    swg.appendChild(fld(label,false,inp,hint));
+  });
+  w.appendChild(swg);
+  return w;
+}
+
+// ── DOM UTILS ──
+function mk(tag,cls,html){const e=document.createElement(tag);if(cls)e.className=cls;if(html!==undefined)e.innerHTML=html;return e;}
+function mkIn(type,val,cb,cls){const i=document.createElement('input');i.type=type||'text';i.value=val!==null&&val!==undefined?val:'';if(cls)i.className=cls;i.addEventListener('input',e=>cb(e.target.value));return i;}
+function mkSel(opts,val,cb){const s=document.createElement('select');opts.forEach(o=>{const op=document.createElement('option');op.value=o;op.textContent=o;if(o===val)op.selected=true;s.appendChild(op);});s.addEventListener('change',e=>cb(e.target.value));return s;}
+function mkTa(val,rows,cb){const t=document.createElement('textarea');t.rows=rows||4;t.value=val||'';t.addEventListener('input',e=>cb(e.target.value));return t;}
+function mkTog(checked,cb){const l=mk('label','tog');const i=document.createElement('input');i.type='checkbox';i.checked=!!checked;i.addEventListener('change',e=>cb(e.target.checked));l.appendChild(i);l.appendChild(mk('span','sl'));return l;}
+function mkBtn(cls,txt,cb){const b=mk('button',cls,txt);b.type='button';b.addEventListener('click',cb);return b;}
+function fld(lbl,req,inp,hint){const w=mk('div','field');w.appendChild(mk('label','',lbl+(req?' <span style="color:var(--red)">*</span>':'')));w.appendChild(inp);if(hint){w.appendChild(mk('span','hint',hint));}return w;}
+function mkHr(){return mk('hr','dv');}
+
+// ── MODALS ──
+function openModal(id){document.getElementById(id)?.classList.add('open');}
+function closeModal(id){document.getElementById(id)?.classList.remove('open');}
+document.querySelectorAll('.overlay').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('open');}));
+
+// ── TOAST ──
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.style.transform='translateX(-50%) translateY(0)';clearTimeout(t._t);t._t=setTimeout(()=>{t.style.transform='translateX(-50%) translateY(80px)';},2800);}
+
+// ── BOOT ──
+renderDashboard();
+
+// ── OPTIONAL BACKEND SYNC ──
+// When this page is served by the Diva Atelier API (python -m diva_atelier serve),
+// configurations are loaded from and saved to the server. Opened as a plain file,
+// the built-in sample data is used and nothing is sent anywhere.
+// If the server requires a token (DIVA_API_TOKEN) you are asked for it once per tab.
+async function apiFetch(path, opts = {}) {
+  const send = () => {
+    const token = sessionStorage.getItem('diva_token');
+    const headers = Object.assign({}, opts.headers || {}, token ? { Authorization: 'Bearer ' + token } : {});
+    return fetch(path, Object.assign({}, opts, { headers }));
+  };
+  let res = await send();
+  if (res.status === 401) {
+    const t = window.prompt('This server needs an API token:');
+    if (t) { sessionStorage.setItem('diva_token', t.trim()); res = await send(); }
+  }
+  return res;
+}
+(function syncWithApi(){
+  if (location.protocol === 'file:') return;
+  apiFetch('/api/configs').then(r => r.ok ? r.json() : Promise.reject()).then(data => {
+    if (!data || !Object.keys(data).length) return;
+    Object.keys(CONFIGS).forEach(k => delete CONFIGS[k]);
+    Object.assign(CONFIGS, data);
+    renderDashboard();
+  }).catch(() => {});
+})();
+
+
+// ── INTELLIGENCE MODULE ──
+// ══════════════════════════════════════════════════════════
+//  CONFIGURATION INSIGHTS — DATA & RENDERING
+// ══════════════════════════════════════════════════════════
+
+const INTEL_DATA = [
+  // ── AI RECOMMENDATIONS (derived from feedback patterns) ──
+  {
+    id:'rec-1', type:'recommendation', status:'open', priority:'critical',
+    section:'ES', sectionTitle:'Executive Summary',
+    title:'Strengthen executive summary with an explicit sell-through verdict',
+    summary:'Reviewers consistently added a sentence stating whether the collection is meeting its full-price sell-through target before the "next steps" paragraph. This pattern appeared in 4 of 4 reviewed reports.',
+    confidence:0.94,
+    patternBasis:['comment-1','comment-4','edit-2','edit-5'],
+    patternTags:['writing instructions','performance targets','structure'],
+    feedbackThread:[
+      {type:'comment',author:'Sarah Chen',role:'HeadDesigner',date:'2025-05-28',avatar:'SC',
+       text:'Again missing an explicit performance statement. Please add "The collection is currently meeting/missing its full-price sell-through target" before the recommendations paragraph.'},
+      {type:'comment',author:'Marcus Webb',role:'ProductionManager',date:'2025-05-15',avatar:'MW',
+       text:'Same issue as last quarter — the summary reads well but doesn\'t give the buying team a clear on-target / off-target answer. They need to know immediately how the line is performing.'},
+      {type:'edit',author:'Priya Nair',role:'Writer',date:'2025-06-01',avatar:'PN',
+       before:'Bridal sales results are summarised below.',
+       after:'Bridal sales results are summarised below. Based on the current selling period, the collection is meeting its full-price sell-through target across all core silhouettes.'},
+    ],
+    aiChange:{
+      field:'sections[ES].writingInstructions',
+      label:'Writing Instructions — Executive Summary',
+      before:'Write a concise executive summary of 3–4 paragraphs covering key findings for {collection_season}.',
+      after:'Write a concise executive summary of 3–4 paragraphs covering key findings for {collection_season}. The final paragraph before recommendations MUST include an explicit statement of whether the collection is meeting its full-price sell-through target. Example: "Based on the {collection_season} selling period, the collection is [meeting / missing] its full-price sell-through target for [all / the following] silhouettes."',
+    }
+  },
+  {
+    id:'rec-2', type:'recommendation', status:'open', priority:'high',
+    section:'3', sectionTitle:'Style Performance',
+    title:'Add target-vs-actual comparison table requirement to writing instructions',
+    summary:'Writers consistently omit a side-by-side table showing actual sell-through vs. target by style. Reviewers re-insert this table in 3 of 3 reviewed reports. Recommending it be mandated in the writing instructions.',
+    confidence:0.91,
+    patternBasis:['comment-2','comment-6','edit-3'],
+    patternTags:['writing instructions','table format','performance comparison'],
+    feedbackThread:[
+      {type:'comment',author:'Sarah Chen',role:'HeadDesigner',date:'2025-05-28',avatar:'SC',
+       text:'Please always include Table 3 — Actual vs. Target. The buying team expects this and it\'s missing every time. I\'ve added it again manually.'},
+      {type:'edit',author:'Daniel Park',role:'Writer',date:'2025-05-30',avatar:'DP',
+       before:'Style-level results are presented in Appendix B.',
+       after:'Style-level results are presented in Appendix B. Table 3 presents actual sell-through compared against the target for each style.'},
+    ],
+    aiChange:{
+      field:'sections[3].writingInstructions',
+      label:'Writing Instructions — Style Performance',
+      before:'Present sell-through results for each style. Reference any misses.',
+      after:'Present sell-through results for each style. MUST include a comparison table (Table 3) showing: Style Code | Silhouette | Units Sold | Target Sell-Through | Met (Y/N). Discuss any misses in the following paragraph with trend context (rising/stable/falling).',
+    }
+  },
+  {
+    id:'rec-3', type:'recommendation', status:'open', priority:'high',
+    section:'ES', sectionTitle:'Executive Summary',
+    title:"Update Style & Tone: add 'cheap' → 'accessibly priced' to preferred terminology",
+    summary:"Reviewers replaced 'cheap' with 'accessibly priced' in 6 instances across 3 reports. This is a brand language preference that should be baked into the configuration.",
+    confidence:0.97,
+    patternBasis:['edit-1','edit-4','edit-6','edit-7','edit-8','comment-3'],
+    patternTags:['terminology','style & tone','brand language'],
+    feedbackThread:[
+      {type:'comment',author:'Marcus Webb',role:'ProductionManager',date:'2025-04-22',avatar:'MW',
+       text:"Use 'accessibly priced' not 'cheap' — brand guidelines and the marketing team both prefer this term. It reads as more premium and more accurate. Please fix globally."},
+      {type:'edit',author:'Priya Nair',role:'Writer',date:'2025-05-01',avatar:'PN',
+       before:'The cheap satin range was a top seller in the Madison Avenue salon.',
+       after:'The accessibly priced satin range was a top seller in the Madison Avenue salon.'},
+      {type:'edit',author:'Sarah Chen',role:'HeadDesigner',date:'2025-05-28',avatar:'SC',
+       before:'The cheap end of the range has remained stable.',
+       after:'The accessibly priced end of the range has remained stable.'},
+    ],
+    aiChange:{
+      field:'sections[ES].styleTone.preferredTerminology',
+      label:'Preferred Terminology — Executive Summary',
+      before:'{}',
+      after:'{"cheap":"accessibly priced","baggy":"relaxed","tight":"fitted"}',
+    }
+  },
+  {
+    id:'rec-4', type:'recommendation', status:'accepted', priority:'medium',
+    section:'1', sectionTitle:'Collection Overview',
+    title:'Increase maxParagraphs from 2 to 3 for Collection Overview section',
+    summary:'Writers consistently produce 3-paragraph overviews; the 2-paragraph soft limit causes the QA agent to flag over-length content unnecessarily. Reviewers have approved 3-paragraph overviews in all recent reports.',
+    confidence:0.85,
+    patternBasis:['edit-9','comment-5'],
+    patternTags:['style & tone','paragraph limit','QA config'],
+    feedbackThread:[
+      {type:'comment',author:'Sarah Chen',role:'HeadDesigner',date:'2025-04-10',avatar:'SC',
+       text:'The 2-paragraph limit is too tight for collections with a rich design story. A 3-paragraph overview is appropriate here.'},
+    ],
+    aiChange:{
+      field:'sections[1].styleTone.maxParagraphs',
+      label:'Max Paragraphs — Collection Overview',
+      before:'2',
+      after:'3',
+    }
+  },
+  {
+    id:'rec-5', type:'recommendation', status:'dismissed', priority:'low',
+    section:'3.1', sectionTitle:'Silhouette & Neckline Breakdown',
+    title:'Switch contentShape from Narrative to Mixed for §3.1',
+    summary:'Writers include a silhouette line-drawing figure in this section in recent reports. Consider changing contentShape to Mixed to signal this expectation.',
+    confidence:0.72,
+    patternBasis:['edit-10'],
+    patternTags:['content shape','figures'],
+    feedbackThread:[
+      {type:'edit',author:'Daniel Park',role:'Writer',date:'2025-05-30',avatar:'DP',
+       before:'Silhouette and neckline results are presented in the table below.',
+       after:'Silhouette and neckline results are presented in the table below. Figure 2 presents the silhouette line drawings for the current collection.'},
+    ],
+    aiChange:{
+      field:'sections[3.1].contentShape',
+      label:'Content Shape — Silhouette & Neckline Breakdown',
+      before:'Narrative',
+      after:'Mixed',
+    }
+  },
+
+  // ── REVIEWER COMMENTS ──
+  {
+    id:'comment-1', type:'comment', status:null, priority:'high',
+    section:'ES', sectionTitle:'Executive Summary',
+    reportRun:'Bridal Collection Q2 2025 — Madison Avenue', reportDate:'2025-05-28',
+    author:'Sarah Chen', role:'HeadDesigner', avatar:'SC',
+    title:'Missing explicit performance statement in executive summary',
+    summary:'"Again missing an explicit performance statement. Please add: The collection is currently meeting/missing its full-price sell-through target before the recommendations paragraph."',
+    linkedRec:'rec-1'
+  },
+  {
+    id:'comment-2', type:'comment', status:null, priority:'high',
+    section:'3', sectionTitle:'Style Performance',
+    reportRun:'Bridal Collection Q2 2025 — Madison Avenue', reportDate:'2025-05-28',
+    author:'Sarah Chen', role:'HeadDesigner', avatar:'SC',
+    title:'Target-vs-actual comparison table missing — again',
+    summary:'"Please always include Table 3 — Actual vs. Target. The buying team expects this and it\'s missing every time. I\'ve added it again manually."',
+    linkedRec:'rec-2'
+  },
+  {
+    id:'comment-3', type:'comment', status:null, priority:'medium',
+    section:'ES', sectionTitle:'Executive Summary',
+    reportRun:'Bridal Collection Q1 2025 — Madison Avenue', reportDate:'2025-03-05',
+    author:'Marcus Webb', role:'ProductionManager', avatar:'MW',
+    title:"Use 'accessibly priced' not 'cheap' throughout",
+    summary:'"Brand guidelines and marketing both prefer this term. It reads as more premium and more accurate. Please fix globally across all sections."',
+    linkedRec:'rec-3'
+  },
+  {
+    id:'comment-4', type:'comment', status:null, priority:'critical',
+    section:'ES', sectionTitle:'Executive Summary',
+    reportRun:'Bridal Collection Q1 2025 — Madison Avenue', reportDate:'2025-03-05',
+    author:'Marcus Webb', role:'ProductionManager', avatar:'MW',
+    title:'Performance status must be the first thing the buyer reads',
+    summary:'"The summary reads well but does not give the buying team a clear on-target / off-target answer. They need to know immediately how the line is performing."',
+    linkedRec:'rec-1'
+  },
+  {
+    id:'comment-5', type:'comment', status:null, priority:'low',
+    section:'1', sectionTitle:'Collection Overview',
+    reportRun:'Bridal Collection Q2 2024 — Madison Avenue', reportDate:'2024-06-10',
+    author:'Sarah Chen', role:'HeadDesigner', avatar:'SC',
+    title:'Overview paragraph limit too restrictive',
+    summary:'"The 2-paragraph limit is too tight for collections with a rich design story. 3 paragraphs is appropriate here — please do not flag this in QA."',
+    linkedRec:'rec-4'
+  },
+
+  // ── WRITER EDITS ──
+  {
+    id:'edit-1', type:'edit', status:null, priority:'medium',
+    section:'ES', sectionTitle:'Executive Summary',
+    reportRun:'Bridal Collection Q2 2025 — Madison Avenue', reportDate:'2025-06-01',
+    author:'Priya Nair', role:'Writer', avatar:'PN',
+    title:"Replaced 'cheap' with 'accessibly priced' (×3 in Executive Summary)",
+    summary:'Writer manually replaced terminology in 3 locations throughout the Executive Summary.',
+    diff:{before:'the cheap satin range was a top seller', after:'the accessibly priced satin range was a top seller'},
+    linkedRec:'rec-3'
+  },
+  {
+    id:'edit-2', type:'edit', status:null, priority:'high',
+    section:'ES', sectionTitle:'Executive Summary',
+    reportRun:'Bridal Collection Q2 2025 — Madison Avenue', reportDate:'2025-06-01',
+    author:'Priya Nair', role:'Writer', avatar:'PN',
+    title:'Added sell-through verdict to Executive Summary',
+    summary:'Writer manually appended performance outcome sentence after reviewer feedback.',
+    diff:{before:'Bridal sales results are summarised below.', after:'Bridal sales results are summarised below. Based on the current selling period, the collection is meeting its full-price sell-through target.'},
+    linkedRec:'rec-1'
+  },
+  {
+    id:'edit-3', type:'edit', status:null, priority:'high',
+    section:'3', sectionTitle:'Style Performance',
+    reportRun:'Bridal Collection Q2 2025 — Madison Avenue', reportDate:'2025-05-30',
+    author:'Daniel Park', role:'Writer', avatar:'DP',
+    title:'Added target-vs-actual table reference',
+    summary:'Writer inserted reference to Table 3 comparing actual sell-through vs target.',
+    diff:{before:'Style-level results are presented in Appendix B.',after:'Style-level results are in Appendix B. Table 3 presents actual sell-through vs. target by style.'},
+    linkedRec:'rec-2'
+  },
+];
+
+let intelFilter = 'all';
+
+function initIntelligence() {
+  // Populate section filter
+  const sel = document.getElementById('intelSectionFilter');
+  if (!sel || sel.options.length > 1) return;
+  const sections = [...new Set(INTEL_DATA.map(d=>d.section))];
+  sections.forEach(s => {
+    const o = document.createElement('option');
+    const item = INTEL_DATA.find(d=>d.section===s);
+    o.value=s; o.textContent='§'+s+' — '+(item?.sectionTitle||s);
+    sel.appendChild(o);
+  });
+  renderIntelligenceSummary();
+  renderIntelligence();
+}
+
+function renderIntelligenceSummary() {
+  const bar = document.getElementById('intelSummaryBar');
+  if (!bar) return;
+  const recs = INTEL_DATA.filter(d=>d.type==='recommendation');
+  const open = recs.filter(r=>r.status==='open').length;
+  const accepted = recs.filter(r=>r.status==='accepted').length;
+  const comments = INTEL_DATA.filter(d=>d.type==='comment').length;
+  const edits = INTEL_DATA.filter(d=>d.type==='edit').length;
+  const stats = [
+    {icon:'🤖',bg:'#f3e8ff',val:open,lbl:'Open Recommendations',sub:'awaiting action'},
+    {icon:'✅',bg:'#f0fdf4',val:accepted,lbl:'Accepted',sub:'applied to configuration'},
+    {icon:'💬',bg:'#eff6ff',val:comments,lbl:'Reviewer Comments',sub:'across 3 runs'},
+    {icon:'✏️',bg:'#f0fdf4',val:edits,lbl:'Writer Edits',sub:'manually corrected'},
+  ];
+  bar.innerHTML='';
+  stats.forEach(s=>{
+    bar.innerHTML+=`<div class="intel-stat"><div class="is-icon" style="background:${s.bg}">${s.icon}</div><div><div class="is-val">${s.val}</div><div class="is-lbl">${s.lbl}</div><div style="font-size:.68rem;color:#94a3b8;">${s.sub}</div></div></div>`;
+  });
+  // update nav badge
+  const nb = document.getElementById('navIntelBadge');
+  if (nb) nb.textContent = open;
+  // update filter counts
+  const all = INTEL_DATA.length;
+  const setCount = (id,val) => { const e=document.getElementById(id); if(e) e.textContent=val; };
+  setCount('ifcnt-all',all);
+  setCount('ifcnt-recommendation',recs.length);
+  setCount('ifcnt-comment',comments);
+  setCount('ifcnt-edit',edits);
+}
+
+function setIntelFilter(f, btn) {
+  intelFilter = f;
+  document.querySelectorAll('#panel-intelligence .vt-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderIntelligence();
+}
+
+function renderIntelligence() {
+  const feed = document.getElementById('intelFeed');
+  if (!feed) return;
+  feed.innerHTML = '';
+  const secFilter = document.getElementById('intelSectionFilter')?.value||'';
+  const priFilter = document.getElementById('intelPriorityFilter')?.value||'';
+
+  let items = INTEL_DATA.filter(d => {
+    if (intelFilter !== 'all' && d.type !== intelFilter) return false;
+    if (secFilter && d.section !== secFilter) return false;
+    if (priFilter && d.priority !== priFilter) return false;
+    return true;
+  });
+
+  if (!items.length) {
+    feed.innerHTML='<div class="empty-st"><div class="ei">🔍</div><p>No items match the current filter.</p></div>';
+    return;
+  }
+
+  // Group: recommendations first, then by section
+  const recs = items.filter(d=>d.type==='recommendation');
+  const rest = items.filter(d=>d.type!=='recommendation');
+
+  if (recs.length && (intelFilter==='all'||intelFilter==='recommendation')) {
+    const hdr = document.createElement('div');
+    hdr.style.cssText='font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:10px;display:flex;align-items:center;gap:8px;';
+    hdr.innerHTML='🤖 AI-Generated Recommendations <span style="background:#ede9fe;color:#6d28d9;padding:1px 7px;border-radius:10px;font-weight:700;font-size:.68rem;">'+recs.length+'</span>';
+    feed.appendChild(hdr);
+    recs.forEach(r => feed.appendChild(buildIntelCard(r)));
+  }
+
+  if (rest.length && intelFilter!=='recommendation') {
+    const hdr2 = document.createElement('div');
+    hdr2.style.cssText='font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin:18px 0 10px;display:flex;align-items:center;gap:8px;';
+    hdr2.innerHTML='📋 Raw Feedback Log <span style="background:#f1f5f9;color:#64748b;padding:1px 7px;border-radius:10px;font-weight:700;font-size:.68rem;">'+rest.length+'</span>';
+    feed.appendChild(hdr2);
+    rest.forEach(r => feed.appendChild(buildIntelCard(r)));
+  }
+}
+
+function buildIntelCard(item) {
+  const card = document.createElement('div');
+  card.className = 'intel-card ic-'+item.type;
+  card.id = 'icard-'+item.id;
+  if (item.status==='dismissed') card.style.opacity='0.55';
+
+  const priBg = {critical:'ip-critical',high:'ip-high',medium:'ip-medium',low:'ip-low'}[item.priority]||'ip-low';
+  const typeLbl = {recommendation:'🤖 AI Recommendation',comment:'💬 Reviewer Comment',edit:'✏️ Writer Edit'}[item.type];
+  const statusEl = item.type==='recommendation' ? `<span class="ic-status-badge is-${item.status}">${{open:'⏳ Open',accepted:'✅ Accepted',dismissed:'— Dismissed',applied:'🔵 Applied'}[item.status]||item.status}</span>` : '';
+
+  // Confidence bar for recommendations
+  const confEl = item.confidence ? `<span class="ai-conf"><span style="font-size:.7rem;color:#7c3aed;margin-right:4px;">${Math.round(item.confidence*100)}% confidence</span><span class="ai-conf-bar"><span class="ai-conf-fill" style="width:${item.confidence*100}%"></span></span></span>` : '';
+
+  const linkedTag = item.linkedRec ? `<span style="background:#f3e8ff;color:#6d28d9;padding:1px 7px;border-radius:4px;font-size:.68rem;cursor:pointer;" onclick="event.stopPropagation();scrollToRec('${item.linkedRec}')">🔗 See ${item.type==='recommendation'?'source feedback':'AI rec'}</span>` : '';
+
+  card.innerHTML = `
+    <div class="intel-card-head" onclick="document.getElementById('icard-${item.id}').classList.toggle('open')">
+      <div class="ic-content">
+        <div style="display:flex;align-items:center;gap:6px;margin-bottom:5px;flex-wrap:wrap;">
+          <span class="ic-type-badge ${item.type}">${typeLbl}</span>
+          <span class="ic-priority-badge ${priBg}">${item.priority}</span>
+          ${statusEl}
+          ${confEl}
+        </div>
+        <div class="ic-title">${item.title}</div>
+        <div class="ic-section-ref">
+          <span class="sr-tag">§${item.section}</span>${item.sectionTitle}
+          ${item.reportRun ? `<span style="color:#94a3b8;">·</span><span>${item.reportRun}</span>` : ''}
+          ${item.author ? `<span style="color:#94a3b8;">·</span><span>${item.author}</span><span style="background:#f1f5f9;padding:1px 6px;border-radius:4px;font-size:.68rem;">${item.role}</span>` : ''}
+          ${linkedTag}
+        </div>
+        <div class="ic-summary">${item.summary}</div>
+        ${item.patternTags ? `<div class="pattern-chips">${item.patternTags.map(t=>`<span class="pchip">${t}</span>`).join('')}</div>` : ''}
+      </div>
+      <button style="background:none;border:none;cursor:pointer;color:var(--muted);font-size:.85rem;flex-shrink:0;margin-top:4px;" onclick="event.stopPropagation();document.getElementById('icard-${item.id}').classList.toggle('open')">▾</button>
+    </div>
+    <div class="ic-body">
+      ${buildIntelCardBody(item)}
+    </div>`;
+  return card;
+}
+
+function buildIntelCardBody(item) {
+  let html = '';
+
+  // Feedback thread
+  if (item.feedbackThread || item.diff || item.author) {
+    html += '<div class="feedback-thread">';
+    if (item.type==='recommendation' && item.feedbackThread) {
+      html += `<div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin-bottom:10px;">📋 Source Feedback (${item.feedbackThread.length} items)</div>`;
+      item.feedbackThread.forEach(e => {
+        const avCls = e.type==='comment'?'ft-av-reviewer':e.type==='edit'?'ft-av-writer':'ft-av-ai';
+        const typeTag = e.type==='comment'?'<span style="background:#dbeafe;color:#1e40af;padding:1px 6px;border-radius:4px;font-size:.65rem;font-weight:700;">COMMENT</span>':'<span style="background:#dcfce7;color:#166534;padding:1px 6px;border-radius:4px;font-size:.65rem;font-weight:700;">EDIT</span>';
+        html += `<div class="ft-entry">
+          <div class="ft-avatar ${avCls}">${e.avatar}</div>
+          <div style="flex:1;">
+            <div class="ft-meta">${typeTag} <strong>${e.author}</strong> <span>${e.role}</span> <span>·</span> <span>${e.date}</span></div>
+            ${e.text ? `<div class="ft-text">"${e.text}"</div>` : ''}
+            ${e.before && e.after ? `<div class="ft-diff"><span class="removed">${e.before}</span><br/><span class="added">${e.after}</span></div>` : ''}
+          </div>
+        </div>`;
+      });
+    } else if (item.diff) {
+      html += `<div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin-bottom:8px;">✏️ Content Change</div>`;
+      html += `<div class="ft-entry"><div class="ft-avatar ft-av-writer">${item.avatar}</div><div style="flex:1;"><div class="ft-meta"><strong>${item.author}</strong> <span>${item.role}</span> · ${item.reportDate||''}</div><div class="ft-diff"><span class="removed">${item.diff.before}</span><br/><span class="added">${item.diff.after}</span></div></div></div>`;
+    } else {
+      html += `<div class="ft-entry"><div class="ft-avatar ft-av-reviewer">${item.avatar}</div><div style="flex:1;"><div class="ft-meta"><strong>${item.author}</strong> <span>${item.role}</span> · ${item.reportDate||''}</div><div class="ft-text">"${item.summary}"</div></div></div>`;
+    }
+    html += '</div>';
+  }
+
+  // AI Recommendation block
+  if (item.type==='recommendation' && item.aiChange) {
+    const isAccepted = item.status==='accepted';
+    const isDismissed = item.status==='dismissed';
+    html += `<div class="ai-rec-block">
+      <div class="ai-rec-header">
+        <div class="ai-icon">🤖</div>
+        <div class="ai-title">Proposed Config Change</div>
+        <span class="ai-conf">${Math.round(item.confidence*100)}% confidence <span class="ai-conf-bar"><span class="ai-conf-fill" style="width:${item.confidence*100}%"></span></span></span>
+      </div>
+      <div class="ai-change-box">
+        <div class="ai-change-label">Field</div>
+        <div class="ai-change-field">${item.aiChange.field}</div>
+        <div style="font-size:.72rem;color:var(--muted);margin:6px 0 4px;">Before</div>
+        <div class="ai-change-before">${item.aiChange.before}</div>
+        <div style="font-size:.72rem;color:var(--muted);margin:6px 0 4px;">After (proposed)</div>
+        <div class="ai-change-after">${item.aiChange.after}</div>
+      </div>
+      ${!isDismissed ? `<div class="ai-rec-actions">
+        ${!isAccepted ? `<button class="btn-accept" onclick="event.stopPropagation();acceptRec('${item.id}')">✅ Accept & Apply to Configuration</button>` : `<span style="font-size:.8rem;color:#16a34a;font-weight:600;">✅ Accepted — config updated</span>`}
+        ${!isAccepted ? `<button class="btn-edit-config" onclick="event.stopPropagation();editRecFromRec('${item.id}')">✎ Edit Before Applying</button>` : ''}
+        ${!isAccepted ? `<button class="btn-dismiss" onclick="event.stopPropagation();dismissRec('${item.id}')">Dismiss</button>` : ''}
+        <button class="btn-view-section" onclick="event.stopPropagation();navToSection('${item.section}')">↗ View Section</button>
+      </div>` : `<div style="font-size:.78rem;color:#94a3b8;">Dismissed · <button onclick="event.stopPropagation();reopenRec('${item.id}')" style="background:none;border:none;cursor:pointer;color:var(--brand);font-size:.78rem;font-weight:600;">Reopen</button></div>`}
+    </div>`;
+  }
+
+  // For comments/edits: show link to associated recommendation
+  if (item.type!=='recommendation' && item.linkedRec) {
+    const rec = INTEL_DATA.find(d=>d.id===item.linkedRec);
+    if (rec) {
+      html += `<div style="padding:10px 14px;background:#f8fafc;border-top:1px solid var(--border);">
+        <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin-bottom:7px;">🤖 Linked AI Recommendation</div>
+        <div style="display:flex;align-items:center;gap:8px;padding:8px 10px;background:#fff;border:1px solid #e9d5ff;border-radius:7px;cursor:pointer;" onclick="event.stopPropagation();scrollToRec('${rec.id}')">
+          <span style="font-size:.88rem;">🤖</span>
+          <div style="flex:1;"><div style="font-size:.8rem;font-weight:600;color:#4c1d95;">${rec.title}</div><div style="font-size:.72rem;color:#7c3aed;">§${rec.section} · ${rec.sectionTitle} · ${Math.round(rec.confidence*100)}% confidence</div></div>
+          <span class="ic-status-badge is-${rec.status}" style="flex-shrink:0;">${{open:'⏳ Open',accepted:'✅ Accepted',dismissed:'— Dismissed'}[rec.status]}</span>
+        </div>
+      </div>`;
+    }
+  }
+  return html;
+}
+
+// ── ACTIONS ──────────────────────────────────────────────
+function acceptRec(id) {
+  const item = INTEL_DATA.find(d=>d.id===id);
+  if (!item) return;
+  item.status = 'accepted';
+  // Apply change to config
+  applyRecChange(item);
+  // Re-render the card
+  const card = document.getElementById('icard-'+id);
+  if (card) card.outerHTML = buildIntelCard(item).outerHTML;
+  document.getElementById('icard-'+id)?.classList.add('open');
+  renderIntelligenceSummary();
+  showToast('✅ Recommendation accepted and applied to configuration.');
+}
+
+function dismissRec(id) {
+  const item = INTEL_DATA.find(d=>d.id===id);
+  if (!item) return;
+  item.status = 'dismissed';
+  renderIntelligence();
+  renderIntelligenceSummary();
+  showToast('Recommendation dismissed.');
+}
+
+function reopenRec(id) {
+  const item = INTEL_DATA.find(d=>d.id===id);
+  if (!item) return;
+  item.status = 'open';
+  renderIntelligence();
+  renderIntelligenceSummary();
+  showToast('Recommendation reopened.');
+}
+
+function acceptAllRecs() {
+  const open = INTEL_DATA.filter(d=>d.type==='recommendation'&&d.status==='open');
+  open.forEach(item => { item.status='accepted'; applyRecChange(item); });
+  renderIntelligence();
+  renderIntelligenceSummary();
+  showToast('✅ '+open.length+' recommendations accepted and applied.');
+}
+
+function applyRecChange(item) {
+  if (!item.aiChange || !R) return;
+  const field = item.aiChange.field;
+  // Parse field path and apply to R
+  try {
+    if (field.includes('styleTone.preferredTerminology')) {
+      const match = field.match(/sections\[([^\]]+)\]/);
+      if (match) {
+        const sec = R.sections.find(s=>s.num===match[1]||s.id===match[1]);
+        if (sec) {
+          if (!sec.styleTone) sec.styleTone={};
+          sec.styleTone.preferredTerminology = JSON.parse(item.aiChange.after);
+        }
+      }
+    } else if (field.includes('writingInstructions')) {
+      const match = field.match(/sections\[([^\]]+)\]/);
+      if (match) {
+        const sec = R.sections.find(s=>s.num===match[1]);
+        if (sec) sec.instructions = item.aiChange.after;
+      }
+    } else if (field.includes('maxParagraphs')) {
+      const match = field.match(/sections\[([^\]]+)\]/);
+      if (match) {
+        const sec = R.sections.find(s=>s.num===match[1]);
+        if (sec) { if(!sec.styleTone)sec.styleTone={}; sec.styleTone.maxParagraphs=+item.aiChange.after; }
+      }
+    } else if (field.includes('contentShape')) {
+      const match = field.match(/sections\[([^\]]+)\]/);
+      if (match) {
+        const sec = R.sections.find(s=>s.num===match[1]);
+        if (sec) sec.shape = item.aiChange.after;
+      }
+    }
+    updateCfgStatus('unsaved');
+  } catch(e) { console.warn('Could not auto-apply change:', e); }
+}
+
+function editRecFromRec(id) {
+  const item = INTEL_DATA.find(d=>d.id===id);
+  if (!item) return;
+  // Navigate to the relevant section
+  navToSection(item.section);
+  showToast('Navigated to §'+item.section+' — make your edits then return to accept.');
+}
+
+function navToSection(secNum) {
+  switchMain('sections', document.querySelector('.sn-item[onclick*="sections"]'));
+  setTimeout(()=>{
+    const sec = R?.sections.find(s=>s.num===secNum);
+    if (sec) {
+      const card = document.getElementById('secc-'+sec.id);
+      if (card) { card.classList.add('open'); card.scrollIntoView({behavior:'smooth',block:'start'}); }
+    }
+  }, 150);
+}
+
+function scrollToRec(id) {
+  const card = document.getElementById('icard-'+id);
+  if (card) { card.classList.add('open'); card.scrollIntoView({behavior:'smooth',block:'start'}); }
+}
+
+function runAIAnalysis() {
+  const btn = document.querySelector('button[onclick="runAIAnalysis()"]');
+  if (btn) { btn.innerHTML='<span class="spinning">🧠</span> Analysing…'; btn.disabled=true; }
+  setTimeout(()=>{
+    if (btn) { btn.innerHTML='🧠 Re-analyse'; btn.disabled=false; }
+    showToast('🧠 Analysis complete — 5 recommendations updated.');
+    renderIntelligence();
+    renderIntelligenceSummary();
+  }, 2200);
+}
+
+// Hook into switchMain to init when intelligence panel opens
+const _origSwitchMain = switchMain;
+switchMain = function(name, el) {
+  _origSwitchMain(name, el);
+  if (name === 'intelligence') {
+    initIntelligence();
+  }
+};
+
+</script>
+</body>
+</html>

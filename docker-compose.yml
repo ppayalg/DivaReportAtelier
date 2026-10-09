@@ -1,0 +1,14 @@
+services:
+  diva-atelier:
+    build: .
+    ports:
+      - "127.0.0.1:8000:8000"      # localhost only; put a TLS proxy in front to expose it
+    environment:
+      DIVA_LLM_PROVIDER: ${DIVA_LLM_PROVIDER:-mock}
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+      DIVA_MODEL: ${DIVA_MODEL:-}
+      DIVA_API_TOKEN: ${DIVA_API_TOKEN:-}
+    volumes:
+      - diva-data:/data
+volumes:
+  diva-data:

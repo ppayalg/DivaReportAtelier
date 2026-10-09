@@ -1,0 +1,161 @@
+{
+  "id": "C-0012",
+  "name": "Monthly Evening Gown Review",
+  "version": 2,
+  "status": "Active",
+  "type": "Evening Gowns",
+  "client": "Evening Couture",
+  "country": "AU",
+  "output": "pdf",
+  "template": "TPL-EVE-v1",
+  "style": "Standard — Professional",
+  "desc": "Monthly sales and merchandising review for evening gowns covering fabric performance, fit feedback, embellishment quality, and stock levels across showrooms.",
+  "numApproversRequired": 3,
+  "globalApprovers": [
+    {
+      "role": "ProductionManager",
+      "sla": 48,
+      "order": 1,
+      "required": true
+    },
+    {
+      "role": "QualityController",
+      "sla": 24,
+      "order": 2,
+      "required": true
+    }
+  ],
+  "lastUpdated": "2025-05-28",
+  "sections_count": 4,
+  "vars_count": 3,
+  "geography": {
+    "country": "AU",
+    "state": "Queensland",
+    "city": "Brisbane",
+    "studioName": "Brisbane Flagship Showroom",
+    "studioId": "STU-BNE01",
+    "sizeSystem": "AU Women's Sizing",
+    "labellingAuthority": "ACCC",
+    "licenceNo": "ABN-BNE001",
+    "labellingStandard": "AS/NZS 1957",
+    "cadence": "Monthly",
+    "sizeStandards": [
+      "AS 1344",
+      "AU Size Chart"
+    ]
+  },
+  "variables": [
+    {
+      "id": "v1",
+      "name": "sales_month",
+      "label": "Sales Month",
+      "type": "Date",
+      "sort": 1,
+      "required": true,
+      "help": "Month of selling activity"
+    },
+    {
+      "id": "v2",
+      "name": "store_name",
+      "label": "Showroom Name",
+      "type": "FreeText",
+      "sort": 2,
+      "required": true,
+      "help": "Full showroom name as per store directory"
+    },
+    {
+      "id": "v3",
+      "name": "embellishment_review_done",
+      "label": "Embellishment Review Completed?",
+      "type": "Boolean",
+      "sort": 3,
+      "required": true,
+      "help": ""
+    }
+  ],
+  "sections": [
+    {
+      "id": "s1",
+      "num": "ES",
+      "title": "Executive Summary",
+      "type": "ExecutiveSummary",
+      "shape": "Text",
+      "seq": 0,
+      "parent": "",
+      "required": true,
+      "generatable": true,
+      "instructions": "Summarise monthly sales outcomes for {store_name} for {sales_month}.",
+      "sources": [],
+      "approvers": [
+        {
+          "role": "ProductionManager",
+          "sla": 48,
+          "order": 1,
+          "required": true
+        }
+      ],
+      "condition": null
+    },
+    {
+      "id": "s2",
+      "num": "1",
+      "title": "Introduction & Showroom Overview",
+      "type": "Content",
+      "shape": "Text",
+      "seq": 1,
+      "parent": "",
+      "required": true,
+      "generatable": true,
+      "instructions": "Describe {store_name}, the evening gown range, and scope.",
+      "sources": [
+        {
+          "id": "src1",
+          "priority": 1,
+          "index": "prior-reports",
+          "query": "evening gown showroom overview {store_name}",
+          "mode": "Semantic",
+          "topK": 3,
+          "minScore": 0.65,
+          "filter": "Narrative",
+          "fallback": "GenerateWithoutContext"
+        }
+      ],
+      "approvers": [],
+      "condition": null
+    },
+    {
+      "id": "s3",
+      "num": "2",
+      "title": "Fabric & Fit Feedback",
+      "type": "Content",
+      "shape": "Mixed",
+      "seq": 2,
+      "parent": "",
+      "required": true,
+      "generatable": true,
+      "instructions": "Present and interpret fabric and fit feedback from fittings and returns.",
+      "sources": [],
+      "approvers": [],
+      "condition": null
+    },
+    {
+      "id": "s4",
+      "num": "3",
+      "title": "Embellishment & Beading Review",
+      "type": "Content",
+      "shape": "Table",
+      "seq": 3,
+      "parent": "",
+      "required": false,
+      "generatable": true,
+      "instructions": "Present embellishment and beading quality data.",
+      "sources": [],
+      "approvers": [],
+      "condition": {
+        "variable": "embellishment_review_done",
+        "operator": "equals",
+        "value": "true"
+      }
+    }
+  ]
+}
